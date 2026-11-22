@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#100a0d">
-<title>Nocturne M3U Manager 1.4.2</title>
+<title>Nocturne M3U Manager 1.4.3</title>
 <style>
 :root{color-scheme:dark;--bg:#100a0d;--surface:#1d1319;--surface2:#281a22;--primary:#642b40;--accent:#963d56;--soft:#b8798c;--text:#f0e7ea;--muted:#b6a4ab;--line:#49313b;--danger:#e5a0a9}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);transition:background-color .18s ease;color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
@@ -28,7 +28,7 @@ input[type=text]{min-width:0;background:var(--bg);border:1px solid var(--line);b
 .search{margin:12px 0}
 .view-tabs{display:flex;gap:7px;overflow-x:auto;padding:3px 0 8px;scrollbar-width:none}.view-tabs button{white-space:nowrap;background:var(--surface2);border:1px solid var(--line);color:var(--muted);padding:9px 13px;border-radius:12px;font-size:13px;font-weight:650}.view-tabs button.active{background:var(--primary);border-color:var(--primary);color:#fff}
 .track-list{min-width:0}.track{display:flex;align-items:center;gap:11px;padding:11px 2px;border-bottom:1px solid rgba(73,49,59,.65);min-width:0;max-width:100%}.track:last-child{border:0}
-.track input{accent-color:var(--soft);width:18px;height:18px;flex-shrink:0}.track-info{min-width:0;flex:1;overflow:hidden}.track-title{font-weight:600;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.35}.track-path{display:block;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.track input{accent-color:var(--soft);width:18px;height:18px;flex-shrink:0}.track-remove{flex-shrink:0;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:6px 8px;font-size:11px}.track-remove:active{background:var(--surface2)}.track-info{min-width:0;flex:1;overflow:hidden}.track-title{font-weight:600;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.35}.track-path{display:block;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .cover{width:54px;height:54px;flex:0 0 54px;object-fit:cover;border-radius:11px;background:linear-gradient(145deg,#583044,#21151c);border:1px solid var(--line)}.cover.large{width:100%;height:auto;aspect-ratio:1;flex:auto;border-radius:14px}
 .cover-placeholder{display:grid;place-items:center;color:#d9b9c5;font-size:21px;background:linear-gradient(145deg,#583044,#21151c)}
 .group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.group-card{min-width:0;background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:10px;text-align:left}.group-card b{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.group-card span{display:block;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -39,6 +39,7 @@ dialog{width:min(440px,calc(100% - 28px));max-height:min(82dvh,700px);overflow:a
 dialog::backdrop{background:#0009;backdrop-filter:blur(4px)}.dialog-inner{padding:22px}.dialog-inner h3{margin:0 0 7px;font-size:19px}.dialog-inner p{color:var(--muted);font-size:13px;margin:0 0 18px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;flex-wrap:wrap}
 .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:#34232c;border:1px solid var(--line);border-radius:99px;padding:11px 16px;box-shadow:0 8px 30px #0008;z-index:10;max-width:calc(100% - 30px);font-size:13px}
 .hidden{display:none!important}
+.diag-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.diag-stat{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px}.diag-stat b{display:block;font-size:19px}.diag-stat span{font-size:11px;color:var(--muted)}.diag-note{font-size:12px;color:var(--muted);margin-top:10px}
 @media(min-width:700px){.app{padding-left:24px;padding-right:24px}nav{max-width:520px}.track-list{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}.track{min-width:0}.group-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
@@ -54,7 +55,7 @@ dialog::backdrop{background:#0009;backdrop-filter:blur(4px)}.dialog-inner{paddin
 <div class="row between wrap" style="margin-top:13px"><span class="sub" id="folderStatus">No folder selected yet</span><button class="btn secondary small" id="clearLibrary">Clear library</button></div>
 </div>
 <div class="stats"><div class="stat"><b id="trackCount">0</b><span>Audio tracks</span></div><div class="stat"><b id="selectedCount">0</b><span>Selected</span></div><div class="stat"><b id="playlistCount">0</b><span>Playlists</span></div></div>
-<div class="row between wrap"><div><b id="viewHeading">Songs</b><div class="sub" id="trackHint">Select a folder to begin</div></div><div class="actions"><button class="btn ghost small" id="selectAll">Select all</button><button class="btn small hidden" id="addAlbum">Add album</button><button class="btn small" id="addSelected" disabled>Add selected</button></div></div>
+<div class="row between wrap"><div><b id="viewHeading">Songs</b><div class="sub" id="trackHint">Select a folder to begin</div></div><div class="actions"><button class="btn ghost small" id="selectAll">Select all</button><button class="btn small hidden" id="addAlbum">Add album</button><button class="btn small" id="addSelected" disabled>Add selected</button><button class="btn secondary small" id="removeSelected" disabled>Remove selected</button></div></div>
 <input class="search" id="searchInput" type="text" placeholder="Search tracks, artists, albums, genres or years…" aria-label="Search library">
 <div class="view-tabs" id="viewTabs"><button class="active" data-view="songs">Songs</button><button data-view="albums">Albums</button><button data-view="artists">Artists</button><button data-view="genres">Genres</button></div>
 <div class="sort-row"><label for="librarySort">Sort by</label><select class="sort-select" id="librarySort" aria-label="Sort library"></select></div>
@@ -68,12 +69,13 @@ dialog::backdrop{background:#0009;backdrop-filter:blur(4px)}.dialog-inner{paddin
 <div class="page-head"><div><h2>Settings</h2><p class="sub">Application preferences and export information.</p></div></div>
 <div class="panel"><b>Appearance</b><p class="sub" style="margin:5px 0 13px">Choose the interface style.</p><div class="actions"><button class="btn small" id="burgundyTheme">Burgundy</button><button class="btn secondary small" id="amoledTheme">AMOLED black</button><button class="btn secondary small" id="materialTheme">Custom Color</button></div><div id="materialControls" class="hidden" style="margin-top:16px"><label for="materialColor" class="sub" style="display:block;margin-bottom:8px">Dynamic accent color</label><div class="row"><input id="materialColor" type="color" value="#7894c8" style="width:54px;height:44px;padding:4px;background:var(--surface2);border:1px solid var(--line);border-radius:12px"><span class="sub">Choose any accent color. The interface palette updates automatically.</span></div><label class="row" style="margin-top:14px;gap:10px;cursor:pointer"><input id="customAmoled" type="checkbox" style="width:18px;height:18px;accent-color:var(--accent)"><span><b style="font-size:13px">AMOLED black background</b><span class="sub" style="display:block">Keep your custom accent colors while using pure black backgrounds.</span></span></label></div></div>
 <div class="panel"><b>About metadata</b><p class="sub" style="margin-top:8px">The library reads embedded tags and artwork locally when supported. Metadata and embedded artwork are read locally with TagLib-Wasm 2.5.0. Supported formats include MP3, AAC, M4A/MP4, FLAC, OGG, OPUS, WAV, AIFF, APE, DSF, DSDIFF and more. Available fields depend on the tags embedded in each file.</p></div>
+<div class="panel" id="diagnosticsPanel"><b>Nocturne Diagnostics</b><p class="sub" style="margin-top:6px">Local troubleshooting log for application errors, metadata-reading failures, scan speed and library cache.</p><div class="diag-stats"><div class="diag-stat"><b id="diagTotal">0</b><span>Log entries</span></div><div class="diag-stat"><b id="diagErrors">0</b><span>Errors</span></div><div class="diag-stat"><b id="diagWarnings">0</b><span>Warnings</span></div></div><div class="actions"><button class="btn small" id="diagExport">Export .txt</button><button class="btn secondary small" id="diagCopy">Copy report</button><button class="btn ghost small" id="diagClear">Clear logs</button></div><p class="diag-note">Logs stay in this browser and are never sent automatically. The report can contain file names and technical error messages; review it before sharing.</p></div>
 <div class="panel"><b>About M3U export</b><p class="sub" style="margin-top:8px">Playlists use relative paths from the selected music folder, for example:</p><code style="display:block;background:var(--bg);padding:12px;border-radius:12px;font-size:12px;white-space:pre-wrap">#EXTM3U
 #EXTINF:-1,Track title
 Artist/Album/track.flac</code><p class="sub" style="margin:12px 0 0">Keep the same folder structure when transferring music and playlists to your device.</p></div>
-<div class="panel"><b>Local data</b><p class="sub" style="margin:5px 0 13px">Playlists are stored in this browser.</p><button class="btn ghost small" id="resetData">Reset playlists and settings</button></div>
+<div class="panel"><b>Local data</b><p class="sub" style="margin:5px 0 13px">Playlists, library metadata and artwork cache are stored in this browser when storage is available. The first scan reads every file; later scans reuse unchanged metadata. Removing tracks never deletes source files.</p><button class="btn ghost small" id="resetData">Reset playlists and settings</button></div>
 </section>
-</main><footer>Nocturne M3U Manager 1.4.2 · Browser edition</footer>
+</main><footer>Nocturne M3U Manager 1.4.3 · Browser edition</footer>
 </div>
 <dialog id="modal"><div class="dialog-inner" id="modalContent"></div></dialog>
 <div id="toast" class="toast hidden" role="status"></div>
@@ -81,6 +83,77 @@ Artist/Album/track.flac</code><p class="sub" style="margin:12px 0 0">Keep the sa
 import { readTags, readPictures } from "./taglib/simple.browser.js";
 (()=>{
 const $=id=>document.getElementById(id);
+const DIAG_KEY="nocturne_diagnostics_v1",DIAG_LIMIT=300;
+let diagnosticLogs=[];
+try{const saved=JSON.parse(localStorage.getItem(DIAG_KEY)||"[]");if(Array.isArray(saved))diagnosticLogs=saved.slice(-DIAG_LIMIT)}catch{}
+function diagLog(level,event,details={}){
+ const entry={time:new Date().toISOString(),level,event,details};
+ diagnosticLogs.push(entry);if(diagnosticLogs.length>DIAG_LIMIT)diagnosticLogs=diagnosticLogs.slice(-DIAG_LIMIT);
+ try{localStorage.setItem(DIAG_KEY,JSON.stringify(diagnosticLogs))}catch{}
+ updateDiagnostics();
+}
+function diagnosticReport(){
+ const errors=diagnosticLogs.filter(x=>x.level==="error").length,warnings=diagnosticLogs.filter(x=>x.level==="warning").length;
+ return ["Nocturne M3U Manager Diagnostics","App version: 1.4.3","Metadata engine: TagLib-Wasm 2.5.0",`Generated: ${new Date().toISOString()}`,`Entries: ${diagnosticLogs.length} | Errors: ${errors} | Warnings: ${warnings}`,"",...diagnosticLogs.map(x=>`[${x.time}] ${x.level.toUpperCase()} ${x.event} ${JSON.stringify(x.details)}`)].join("\n");
+}
+function updateDiagnostics(){
+ const total=$("diagTotal"),errors=$("diagErrors"),warnings=$("diagWarnings");
+ if(!total)return;
+ total.textContent=diagnosticLogs.length;errors.textContent=diagnosticLogs.filter(x=>x.level==="error").length;warnings.textContent=diagnosticLogs.filter(x=>x.level==="warning").length;
+}
+window.addEventListener("error",e=>diagLog("error","javascript_error",{message:e.message||"Unknown error",file:e.filename||"",line:e.lineno||0,column:e.colno||0}));
+window.addEventListener("unhandledrejection",e=>diagLog("error","unhandled_promise_rejection",{message:String(e.reason?.stack||e.reason||"Unknown rejection")}));
+
+// Persistent library metadata/artwork cache. Original audio files are never copied or modified.
+const LIB_DB_NAME="nocturne_library_v143",LIB_DB_VERSION=1,LIB_STORE="records";
+let libraryDb=null,libraryDbReady=null,activeFolderKey="",scanInProgress=false;
+function openLibraryDb(){
+ if(!("indexedDB" in window))return Promise.reject(new Error("IndexedDB is unavailable"));
+ if(libraryDbReady)return libraryDbReady;
+ libraryDbReady=new Promise((resolve,reject)=>{
+  const request=indexedDB.open(LIB_DB_NAME,LIB_DB_VERSION);
+  request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains(LIB_STORE))db.createObjectStore(LIB_STORE,{keyPath:"id"})};
+  request.onsuccess=()=>{libraryDb=request.result;libraryDb.onversionchange=()=>libraryDb.close();resolve(libraryDb)};
+  request.onerror=()=>reject(request.error||new Error("Could not open IndexedDB"));
+ });
+ return libraryDbReady;
+}
+async function dbGet(id){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readonly"),r=tx.objectStore(LIB_STORE).get(id);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
+async function dbPut(value){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readwrite");tx.objectStore(LIB_STORE).put(value);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error||new Error("IndexedDB write failed"));tx.onabort=()=>reject(tx.error||new Error("IndexedDB write aborted"))})}
+async function dbDelete(id){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readwrite");tx.objectStore(LIB_STORE).delete(id);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error)})}
+async function dbGetMany(ids){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readonly"),store=tx.objectStore(LIB_STORE),requests=ids.map(id=>store.get(id));Promise.all(requests.map(r=>new Promise((res,rej)=>{r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)}))).then(resolve,reject);tx.onerror=()=>reject(tx.error)})}
+function cacheId(folder,path){return "track|"+folder+"|"+path}
+function plainTrack(t){return {title:t.title||"",artist:t.artist||"",album:t.album||"",genre:t.genre||"",trackNo:t.trackNo||"",year:t.year||"",cover:t.cover||"",path:t.path||"",cacheId:t.cacheId||"",sourceSize:t.sourceSize??null,sourceModified:t.sourceModified??null}}
+async function saveLibrarySnapshot(){
+ try{await dbPut({id:"__library__",folder:activeFolderKey,trackIds:tracks.map(t=>t.cacheId).filter(Boolean),savedAt:Date.now()})}
+ catch(error){diagLog("warning","library_snapshot_save_failed",{message:String(error?.message||error)});}
+}
+async function restoreLibrarySnapshot(){
+ try{
+  const saved=await dbGet("__library__");
+  if(!saved||!Array.isArray(saved.trackIds)||!saved.trackIds.length)return;
+  activeFolderKey=saved.folder||"";
+  const cachedTracks=await dbGetMany(saved.trackIds);
+  tracks=cachedTracks.filter(Boolean).map(t=>({...t,file:null}));selected.clear();
+  if(!tracks.length)return;
+  if(tracks.length!==saved.trackIds.length)diagLog("warning","library_restore_partial",{expected:saved.trackIds.length,restored:tracks.length});
+  const root=activeFolderKey||"Saved library";
+  $("folderStatus").textContent=`${root} · ${tracks.length} saved tracks · select the folder to reconnect files`;
+  updateStats();renderTracks();
+  diagLog("info","library_restored",{tracks:tracks.length,folder:root});
+ }catch(error){diagLog("warning","library_restore_failed",{message:String(error?.message||error)});}
+}
+async function removeTracksByPaths(paths){
+ const removing=new Set(paths);const removed=tracks.filter(t=>removing.has(t.path));
+ if(!removed.length)return;
+ tracks=tracks.filter(t=>!removing.has(t.path));for(const p of removing)selected.delete(p);
+ for(const t of removed){if(t.cacheId){try{await dbDelete(t.cacheId)}catch(error){diagLog("warning","cache_delete_failed",{path:t.path,message:String(error?.message||error)})}}}
+ await saveLibrarySnapshot();updateStats();renderTracks();
+ diagLog("info","tracks_removed_from_library",{removed:removed.length,remaining:tracks.length,originalFilesUntouched:true,playlistsUnchanged:true});
+ toast(`${removed.length} tracks removed from library`);
+}
+
+
 const audioExt=new Set(["flac","mp3","wav","m4a","mp4","aac","ogg","opus","wma","aiff","ape","dsf","dff","wv","tta","mpc","shn","spx","oga","mka","mkv","mod","s3m","it","xm"]);
 let tracks=[],selected=new Set(),playlists=JSON.parse(localStorage.getItem("em_playlists")||"[]"),activePlaylist=null,theme=localStorage.getItem("em_theme")||"burgundy",materialSeed=localStorage.getItem("em_material_seed")||"#7894c8",customAmoled=localStorage.getItem("em_custom_amoled")==="true",view="songs",groupFilter=null,groupReturnView="albums",librarySort="title-asc";
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -141,7 +214,7 @@ function updateStats(){
  $("trackCount").textContent=tracks.length;
  $("selectedCount").textContent=selected.size;
  $("playlistCount").textContent=playlists.length;
- $("addSelected").disabled=!getAddableSelectedTracks().length;
+ $("addSelected").disabled=!getAddableSelectedTracks().length;$("removeSelected").disabled=selected.size===0;
 }
 function compareText(a,b){
  return String(a??"").localeCompare(String(b??""),undefined,{numeric:true,sensitivity:"base"});
@@ -337,7 +410,7 @@ async function readMetadata(file){
  try{
   const tags=await readTags(file);
   let pictures=[];
-  try{pictures=await readPictures(file)}catch{}
+  try{pictures=await readPictures(file)}catch(error){diagLog("warning","artwork_read_failed",{file:file.name,message:String(error?.message||error)})}
   const cover=pictures.find(p=>p.type==="FrontCover")||pictures[0];
   const date=firstTag(tags.date)||String(tags.year||"");
   return{
@@ -349,7 +422,7 @@ async function readMetadata(file){
    year:(date.match(/\d{4}/)||[])[0]||"",
    cover:cover?bytesToDataUrl(cover.data,cover.mimeType):""
   };
- }catch{return{}}
+ }catch(error){diagLog("error","metadata_read_failed",{file:file?.name||"unknown",message:String(error?.stack||error)});return{}}
 }
 
 function placeholder(title,large=false){return `<div class="cover cover-placeholder${large?" large":""}">${esc((title||"♫").trim().charAt(0).toUpperCase()||"♫")}</div>`}
@@ -368,11 +441,16 @@ function renderTracks(){
    $("trackList").innerHTML=`<div class="empty">${tracks.length?"No matching tracks.":"Your library is empty.<br>Select your music folder to get started."}</div>`;
    return;
   }
-  $("trackList").innerHTML=list.map(t=>`<label class="track"><input type="checkbox" data-path="${esc(t.path)}" ${selected.has(t.path)?"checked":""}>${coverMarkup(t)}<span class="track-info"><span class="track-title">${esc(t.title)}</span><span class="track-path">${esc([t.artist,t.album].filter(Boolean).join(" · ")||t.path)}</span></span></label>`).join("");
-  $("trackList").querySelectorAll("input").forEach(c=>c.addEventListener("change",()=>{
+  $("trackList").innerHTML=list.map(t=>`<div class="track"><input type="checkbox" aria-label="Select ${esc(t.title)}" data-path="${esc(t.path)}" ${selected.has(t.path)?"checked":""}>${coverMarkup(t)}<span class="track-info"><span class="track-title">${esc(t.title)}</span><span class="track-path">${esc([t.artist,t.album].filter(Boolean).join(" · ")||t.path)}</span></span><button class="track-remove" type="button" data-remove-path="${esc(t.path)}" aria-label="Remove ${esc(t.title)}">Remove</button></div>`).join("");
+  $("trackList").querySelectorAll('input[type="checkbox"]').forEach(c=>c.addEventListener("change",()=>{
    if(c.checked)selected.add(c.dataset.path);else selected.delete(c.dataset.path);
    updateStats();
    if(groupFilter&&groupFilter.key==="album")syncViews();
+  }));
+  $("trackList").querySelectorAll("[data-remove-path]").forEach(b=>b.addEventListener("click",()=>{
+   const path=b.dataset.removePath;const track=tracks.find(t=>t.path===path);if(!track)return;
+   modal("Remove track from library?",`“${esc(track.title)}” will be removed from this library only. The original audio file and saved playlists will remain untouched.`,"",`<button class="btn ghost" id="cancelRemove">Cancel</button><button class="btn" id="confirmRemove">Remove</button>`);
+   $("cancelRemove").onclick=closeModal;$("confirmRemove").onclick=async()=>{closeModal();await removeTracksByPaths([path])};
   }));
   return;
  }
@@ -405,27 +483,55 @@ function renderTracks(){
 function syncViews(){document.querySelectorAll("#viewTabs button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));updateLibrarySortOptions();$("selectAll").classList.toggle("hidden",view!=="songs"||!!groupFilter);$("addSelected").classList.toggle("hidden",view!=="songs");$("addAlbum").classList.toggle("hidden",!(view==="songs"&&groupFilter&&groupFilter.key==="album"));$("addSelected").textContent=groupFilter&&groupFilter.key==="album"?"Add selected ("+getAddableSelectedTracks().length+")":"Add selected";if(groupFilter){$("viewHeading").textContent=groupFilter.value;let back=document.getElementById("backToGroups");if(!back){back=document.createElement("button");back.id="backToGroups";back.className="btn ghost small";back.textContent="← Back";$("viewHeading").parentElement.appendChild(back)}back.onclick=()=>{groupFilter=null;view=groupReturnView;syncViews();renderTracks()}}else{let back=document.getElementById("backToGroups");if(back)back.remove()}}
 document.querySelectorAll("#viewTabs button").forEach(b=>b.onclick=()=>{groupFilter=null;view=b.dataset.view;syncViews();renderTracks()});
 $("folderInput").addEventListener("change",async e=>{
- const files=[...e.target.files];
- e.target.value="";
+ const files=[...e.target.files];e.target.value="";
  const audio=files.filter(f=>audioExt.has(f.name.split(".").pop().toLowerCase()));
- $("folderStatus").textContent=audio.length?`Reading tags and artwork… This may take a little while (${audio.length} audio files).`:"No supported audio files found";
- tracks=[];selected.clear();groupFilter=null;view="songs";
- syncViews();updateStats();renderTracks();
- for(let i=0;i<audio.length;i++){
-  const f=audio[i],rel=f.webkitRelativePath||f.name,parts=rel.split("/"),meta=await readMetadata(f);
-  tracks.push({title:meta.title||f.name.replace(/\.[^.]+$/,""),artist:meta.artist||"",album:meta.album||"",genre:meta.genre||"",trackNo:meta.trackNo||"",year:meta.year||"",cover:meta.cover||"",path:parts.length>1?parts.slice(1).join("/"):f.name,file:f});
-  if((i+1)%5===0||i===audio.length-1){
-   $("folderStatus").textContent=`Reading tags and artwork… ${i+1} of ${audio.length}. This may take a little while.`;
-   updateStats();renderTracks();
-   await new Promise(resolve=>setTimeout(resolve,0));
-  }
- }
- tracks.sort((a,b)=>a.path.localeCompare(b.path,undefined,{sensitivity:"base"}));
+ const scanStarted=performance.now();
  const folder=files[0]?.webkitRelativePath?.split("/")[0]||"Selected files";
- const coverCount=tracks.filter(t=>t.cover).length;
- $("folderStatus").textContent=tracks.length?folder+" · "+tracks.length+" audio tracks · "+coverCount+" embedded covers":"No supported audio files found";
- groupFilter=null;view="songs";syncViews();updateStats();renderTracks();
- toast(tracks.length?`Loaded ${tracks.length} audio tracks`:"No supported audio files found");
+ activeFolderKey=folder;
+ diagLog("info","scan_started",{filesSelected:files.length,audioFiles:audio.length,concurrency:3,folder});
+ $("folderStatus").textContent=audio.length?`Preparing ${audio.length} audio files…`:"No supported audio files found";
+ tracks=[];selected.clear();groupFilter=null;view="songs";scanInProgress=true;
+ syncViews();updateStats();renderTracks();
+ let cacheHits=0,readCount=0,completed=0,writeErrors=0,nextIndex=0;
+ const cacheByPath=new Map();
+ try{
+  await openLibraryDb();
+  const jobs=audio.map(f=>{const rel=f.webkitRelativePath||f.name,parts=rel.split("/"),path=parts.length>1?parts.slice(1).join("/"):f.name;return {file:f,path,id:cacheId(folder,path)}});
+  const worker=async()=>{
+   while(true){const index=nextIndex++;if(index>=jobs.length)return;const job=jobs[index],f=job.file;
+    let meta=null,fromCache=false;
+    try{
+     const cached=await dbGet(job.id);
+     if(cached&&cached.sourceSize===f.size&&cached.sourceModified===f.lastModified){meta=cached;fromCache=true;cacheHits++}
+    }catch(error){diagLog("warning","metadata_cache_read_failed",{path:job.path,message:String(error?.message||error)})}
+    if(!meta){meta=await readMetadata(f);readCount++;}
+    const track={title:meta.title||f.name.replace(/\.[^.]+$/,""),artist:meta.artist||"",album:meta.album||"",genre:meta.genre||"",trackNo:meta.trackNo||"",year:meta.year||"",cover:meta.cover||"",path:job.path,file:f,cacheId:job.id,sourceSize:f.size,sourceModified:f.lastModified};
+    tracks.push(track);
+    if(!fromCache){try{await dbPut({id:job.id,...plainTrack(track),sourceSize:f.size,sourceModified:f.lastModified})}
+    catch(error){writeErrors++;if(writeErrors<=3)diagLog("warning","metadata_cache_write_failed",{path:job.path,message:String(error?.message||error)})}}
+    completed++;
+    if(completed%10===0||completed===jobs.length){
+     tracks.sort((a,b)=>a.path.localeCompare(b.path,undefined,{sensitivity:"base"}));
+     $("folderStatus").textContent=`Scanning… ${completed} of ${jobs.length} · cache ${cacheHits} · read ${readCount}`;
+     updateStats();renderTracks();
+     if(completed%30===0||completed===jobs.length)await saveLibrarySnapshot();
+    }
+   }
+  };
+  await Promise.all(Array.from({length:Math.min(3,jobs.length)},()=>worker()));
+  tracks.sort((a,b)=>a.path.localeCompare(b.path,undefined,{sensitivity:"base"}));
+  await saveLibrarySnapshot();
+  const coverCount=tracks.filter(t=>t.cover).length;
+  $("folderStatus").textContent=tracks.length?folder+" · "+tracks.length+" audio tracks · "+coverCount+" embedded covers · cache "+cacheHits:"No supported audio files found";
+  groupFilter=null;view="songs";syncViews();updateStats();renderTracks();
+  const scanDurationMs=Math.round(performance.now()-scanStarted);
+  diagLog("info","scan_completed",{audioFiles:audio.length,tracksLoaded:tracks.length,coversFound:coverCount,durationMs:scanDurationMs,cacheHits,metadataReads:readCount,concurrency:Math.min(3,jobs.length),cacheWriteErrors:writeErrors});
+  toast(tracks.length?`Loaded ${tracks.length} tracks · ${cacheHits} from cache`:"No supported audio files found");
+ }catch(error){
+  diagLog("error","scan_failed",{message:String(error?.stack||error),completed,audioFiles:audio.length});
+  $("folderStatus").textContent=`Scan interrupted · ${tracks.length} tracks loaded`;
+  await saveLibrarySnapshot();toast("Scan interrupted; loaded tracks were saved where possible");
+ }finally{scanInProgress=false;updateStats()}
 });
 $("searchInput").addEventListener("input",renderTracks);
 $("librarySort").addEventListener("change",()=>{
@@ -433,11 +539,16 @@ $("librarySort").addEventListener("change",()=>{
  renderTracks();
 });
 $("selectAll").addEventListener("click",()=>{let visible=tracks;if(groupFilter)visible=tracks.filter(t=>t[groupFilter.key]===groupFilter.value);if(selected.size===visible.length)selected.clear();else visible.forEach(t=>selected.add(t.path));renderTracks();updateStats()});
+$("removeSelected").addEventListener("click",()=>{
+ const paths=[...selected];if(!paths.length)return;
+ modal("Remove selected tracks?",`${paths.length} selected tracks will be removed from the library only. Original audio files and saved playlists will remain untouched.`,"",`<button class="btn ghost" id="cancelBulkRemove">Cancel</button><button class="btn" id="confirmBulkRemove">Remove ${paths.length}</button>`);
+ $("cancelBulkRemove").onclick=closeModal;$("confirmBulkRemove").onclick=async()=>{closeModal();await removeTracksByPaths(paths)};
+});
 $("clearLibrary").addEventListener("click",()=>{
  modal("Clear music library?","This will remove the currently loaded tracks and their selection from the app. Your original music files and saved playlists will not be deleted.",'<p style="margin:0;color:var(--muted);font-size:13px">You can load the folder again whenever you want.</p>',`<button class="btn ghost" id="cancelClear">Cancel</button><button class="btn" id="confirmClear">Clear library</button>`);
  $("cancelClear").onclick=closeModal;
- $("confirmClear").onclick=()=>{
-  tracks=[];selected.clear();$("folderInput").value="";$("folderStatus").textContent="No folder selected yet";groupFilter=null;view="songs";syncViews();renderTracks();updateStats();closeModal();toast("Library cleared");
+ $("confirmClear").onclick=async()=>{
+  tracks=[];selected.clear();activeFolderKey="";try{await dbDelete("__library__")}catch(error){diagLog("warning","library_clear_persist_failed",{message:String(error?.message||error)})}$("folderInput").value="";$("folderStatus").textContent="No folder selected yet";groupFilter=null;view="songs";syncViews();renderTracks();updateStats();closeModal();diagLog("info","library_cleared",{metadataCachePreserved:true});toast("Library cleared");
  };
 });
 function modal(title,desc,body,buttons){$("modalContent").innerHTML=`<h3>${title}</h3><p>${desc}</p>${body}<div class="dialog-actions">${buttons}</div>`;$("modal").showModal()}
@@ -518,8 +629,11 @@ function openPlaylist(id){
 function playlistMore(id){let p=playlists.find(x=>x.id===id);if(!p)return;modal("Playlist options",esc(p.name),'<input id="renameInput" type="text" maxlength="60" placeholder="New playlist name">',`<button class="btn ghost" id="cancelModal">Cancel</button><button class="btn ghost" id="deletePlaylist">Delete</button><button class="btn" id="renamePlaylist">Rename</button>`);$("cancelModal").onclick=closeModal;$("renamePlaylist").onclick=()=>{let n=$("renameInput").value.trim();if(!n)return;if(playlists.some(x=>x.id!==id&&x.name.toLowerCase()===n.toLowerCase())){toast("Name already exists");return}p.name=n;save();closeModal();renderPlaylists();toast("Playlist renamed")};$("deletePlaylist").onclick=()=>{playlists=playlists.filter(x=>x.id!==id);save();closeModal();renderPlaylists();updateStats();toast("Playlist deleted")}}
 function exportPlaylist(id){let p=playlists.find(x=>x.id===id);if(!p)return;if(!p.tracks.length){toast("Add tracks before exporting");return}let content="#EXTM3U\n"+p.tracks.map(t=>`#EXTINF:-1,${t.title.replace(/[\r\n]/g," ")}\n${t.path.replace(/\\/g,"/")}`).join("\n")+"\n";let blob=new Blob([content],{type:"audio/x-mpegurl;charset=utf-8"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download=p.name.replace(/[\\/:*?"<>|]/g,"_")+".m3u";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast("M3U export started")}
 $("burgundyTheme").onclick=()=>applyTheme("burgundy");$("amoledTheme").onclick=()=>applyTheme("amoled");$("materialTheme").onclick=()=>applyTheme("material");$("materialColor").addEventListener("input",e=>{materialSeed=e.target.value;localStorage.setItem("em_material_seed",materialSeed);if(theme==="material")applyMaterialPalette()});$("customAmoled").addEventListener("change",e=>{customAmoled=e.target.checked;localStorage.setItem("em_custom_amoled",String(customAmoled));if(theme==="material")applyMaterialPalette()});
+$("diagExport").onclick=()=>{const blob=new Blob([diagnosticReport()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="Nocturne_Diagnostics.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);};
+$("diagCopy").onclick=async()=>{try{await navigator.clipboard.writeText(diagnosticReport());toast("Diagnostic report copied")}catch{toast("Clipboard unavailable; use Export .txt")}};
+$("diagClear").onclick=()=>{diagnosticLogs=[];try{localStorage.removeItem(DIAG_KEY)}catch{}updateDiagnostics();toast("Diagnostic logs cleared")};
 $("resetData").onclick=()=>{modal("Reset local data?","This deletes playlists saved in this browser. Your music files are not affected.","",`<button class="btn ghost" id="cancelModal">Cancel</button><button class="btn" id="confirmModal">Reset</button>`);$("cancelModal").onclick=closeModal;$("confirmModal").onclick=()=>{playlists=[];save();closeModal();renderPlaylists();updateStats();toast("Local data reset")}};
-applyTheme(theme);syncViews();updateStats();renderTracks();
+applyTheme(theme);syncViews();updateStats();updateDiagnostics();renderTracks();restoreLibrarySnapshot();
 })();
 </script>
 </body></html>
