@@ -6,7 +6,7 @@
   <a href="https://samuelramirez52.github.io/M3U-Playlist-Maker/">
     <img src="https://img.shields.io/badge/OPEN%20WEB%20APP-Nocturne-8B6B9E?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open Nocturne">
   </a>
-  <img src="https://img.shields.io/badge/version-1.4.1-6D597A?style=for-the-badge" alt="Version 1.4.1">
+  <img src="https://img.shields.io/badge/version-1.4.2-6D597A?style=for-the-badge" alt="Version 1.4.2">
   <img src="https://img.shields.io/badge/Platform-Web-333333?style=for-the-badge" alt="Web">
 </p><p align="center">
   Browse your music. Organize your library. Create your playlists.
