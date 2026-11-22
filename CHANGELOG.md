@@ -1,4 +1,39 @@
-Nocturne M3U Manager — Changelog v1.4.3
+Nocturne M3U Manager — Changelog
+
+Version 1.4.4
+
+M3U Playlist Import
+
+- Added support for importing external ".m3u" playlists.
+- Added an Import M3U option in the Playlists section.
+- Added playlist name recovery from imported files.
+- Added support for "#EXTINF" metadata.
+- Added support for relative file paths.
+- Imported tracks are automatically matched against the loaded music library.
+- Unmatched tracks are preserved and marked as not found.
+- Added duplicate playlist name protection.
+- Existing playlists remain unaffected during import.
+
+Interface Improvements
+
+- Redesigned playlist action buttons for better visibility and accessibility.
+- Improved the Sort, Import M3U, New Playlist and Export M3U controls.
+- Improved button spacing and layout responsiveness.
+- Replaced the original EM header logo with a minimalist moon symbol.
+- The moon logo uses adaptive coloring to remain visible across different themes.
+
+Compatibility
+
+- Maintained TagLib-Wasm 2.5.0.
+- Preserved existing audio format compatibility, metadata reading and embedded artwork support.
+
+Preserved Features
+
+All existing library browsing, search, sorting, playlist management, M3U export, artwork display, diagnostics, persistent metadata caching and theme customization features remain available.
+
+---
+
+Version 1.4.3
 
 Performance Improvements
 
@@ -49,10 +84,6 @@ Tested with a library containing 506 audio files.
 - 0 errors and 0 warnings.
 - Library restoration, individual removal, bulk removal and playlist preservation successfully tested.
 
-Preserved Features
-
-All existing library browsing, search, sorting, playlist management, M3U export, artwork display and theme customization features remain available.
-
 ---
 
-Version 1.4.3 focuses on faster scanning, persistent library data, improved track management and easier troubleshooting.
+Version 1.4.4 introduces M3U playlist importing and interface refinements, building on the performance, caching and library management improvements introduced in version 1.4.3.
