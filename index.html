@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#100a0d">
-<title>Nocturne M3U Manager 1.4.3</title>
+<title>Nocturne M3U Manager 1.4.4</title>
 <style>
 :root{color-scheme:dark;--bg:#100a0d;--surface:#1d1319;--surface2:#281a22;--primary:#642b40;--accent:#963d56;--soft:#b8798c;--text:#f0e7ea;--muted:#b6a4ab;--line:#49313b;--danger:#e5a0a9}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);transition:background-color .18s ease;color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
 button,input,select{font:inherit}button{border:0;cursor:pointer;color:inherit}.app{max-width:1000px;margin:auto;padding:0 16px 100px}
 header{padding:25px 4px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,var(--accent),var(--primary));display:grid;place-items:center;font-weight:800;letter-spacing:-1px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;display:grid;place-items:center;color:var(--text);background:transparent;flex:0 0 42px}.logo svg{display:block;width:32px;height:32px;fill:currentColor}
 h1{font-size:18px;margin:0;letter-spacing:.2px}header p{margin:2px 0 0;color:var(--muted);font-size:12px}
 .pill{border:1px solid var(--line);border-radius:99px;padding:7px 10px;color:var(--muted);font-size:12px}
 nav{display:flex;gap:6px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:18px;position:sticky;top:8px;z-index:5;backdrop-filter:blur(16px)}
@@ -33,19 +33,19 @@ input[type=text]{min-width:0;background:var(--bg);border:1px solid var(--line);b
 .cover-placeholder{display:grid;place-items:center;color:#d9b9c5;font-size:21px;background:linear-gradient(145deg,#583044,#21151c)}
 .group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.group-card{min-width:0;background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:10px;text-align:left}.group-card b{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.group-card span{display:block;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .empty{text-align:center;color:var(--muted);padding:28px 10px}.playlist{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.playlist:last-child{border:0}.playlist-icon{width:42px;height:42px;border-radius:13px;background:var(--surface2);display:grid;place-items:center;font-size:19px}.playlist-info{flex:1;min-width:0}.playlist-info b{display:block}.playlist-info span{font-size:12px;color:var(--muted)}
-.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:12px;padding:8px 10px;border-radius:10px}.sort-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:2px 0 12px}.sort-row label{font-size:12px;color:var(--muted);white-space:nowrap}.sort-select{min-width:0;max-width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:11px;color:var(--text);padding:9px 10px;font:inherit;font-size:12px;flex:1}.sort-select:focus{outline:1px solid var(--soft)}
+.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:12px;padding:8px 10px;border-radius:10px}.playlist-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;width:100%;margin-top:12px}.playlist-sort-control{display:flex;align-items:center;gap:10px;min-width:0}.playlist-sort-control label{font-size:13px;font-weight:650;color:var(--muted);white-space:nowrap}.playlist-sort-control .sort-select{width:100%;min-height:44px;font-size:13px}.playlist-primary-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.playlist-primary-actions .btn{min-height:44px;padding:10px 12px;white-space:nowrap}.playlist .actions{flex-wrap:nowrap;flex-shrink:0}.playlist .actions .btn{white-space:nowrap;min-height:38px}.dialog-actions button{flex:1 1 auto;min-width:90px;min-height:42px;white-space:nowrap}.sort-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:2px 0 12px}.sort-row label{font-size:12px;color:var(--muted);white-space:nowrap}.sort-select{min-width:0;max-width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:11px;color:var(--text);padding:9px 10px;font:inherit;font-size:12px;flex:1}.sort-select:focus{outline:1px solid var(--soft)}
 footer{color:var(--muted);font-size:11px;text-align:center;margin-top:28px}
 dialog{width:min(440px,calc(100% - 28px));max-height:min(82dvh,700px);overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--surface);color:var(--text);padding:0;box-shadow:0 24px 80px #000b}
 dialog::backdrop{background:#0009;backdrop-filter:blur(4px)}.dialog-inner{padding:22px}.dialog-inner h3{margin:0 0 7px;font-size:19px}.dialog-inner p{color:var(--muted);font-size:13px;margin:0 0 18px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;flex-wrap:wrap}
 .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:#34232c;border:1px solid var(--line);border-radius:99px;padding:11px 16px;box-shadow:0 8px 30px #0008;z-index:10;max-width:calc(100% - 30px);font-size:13px}
 .hidden{display:none!important}
 .diag-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.diag-stat{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px}.diag-stat b{display:block;font-size:19px}.diag-stat span{font-size:11px;color:var(--muted)}.diag-note{font-size:12px;color:var(--muted);margin-top:10px}
-@media(min-width:700px){.app{padding-left:24px;padding-right:24px}nav{max-width:520px}.track-list{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}.track{min-width:0}.group-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:700px){.app{padding-left:24px;padding-right:24px}nav{max-width:520px}.track-list{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}.track{min-width:0}.group-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.playlist-tools{grid-template-columns:minmax(240px,1fr) auto;align-items:end;margin-top:0;width:auto}.playlist-primary-actions{grid-template-columns:auto auto}.playlist-primary-actions .btn{min-width:120px}}
 </style>
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><div class="logo">EM</div><div><h1>Nocturne M3U Manager</h1><p>M3U MANAGER</p></div></div></header>
+<header><div class="brand"><div class="logo" role="img" aria-label="Nocturne"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.7 14.2A8.8 8.8 0 0 1 9.8 3.3 9 9 0 1 0 20.7 14.2Z"/></svg></div><div><h1>Nocturne M3U Manager</h1><p>M3U MANAGER</p></div></div></header>
 <nav aria-label="Main navigation"><button class="active" data-page="library">Library</button><button data-page="playlists">Playlists</button><button data-page="settings">Settings</button></nav>
 <main>
 <section id="libraryPage">
@@ -61,6 +61,69 @@ dialog::backdrop{background:#0009;backdrop-filter:blur(4px)}.dialog-inner{paddin
 <div class="sort-row"><label for="librarySort">Sort by</label><select class="sort-select" id="librarySort" aria-label="Sort library"></select></div>
 <div class="panel" style="padding:8px 14px"><div id="trackList" class="track-list"><div class="empty">Your library is empty.<br>Select your music folder to get started.</div></div><div id="groupList" class="group-grid hidden"></div></div>
 </section>
+<section id="playlistsPage" class="hidden">
+<div class="page-head" style="display:block"><div><h2>Playlists</h2><p class="sub">Import, create and export M3U files.</p></div><div class="playlist-tools"><div class="playlist-sort-control"><label for="playlistSort">Sort playlists</label><select class="sort-select" id="playlistSort" aria-label="Sort playlists"><option value="name-asc">Name: A–Z</option><option value="name-desc">Name: Z–A</option><option value="count-asc">Tracks: fewest first</option><option value="count-desc">Tracks: most first</option></select></div><div class="playlist-primary-actions"><button class="btn secondary" id="importPlaylist">Import M3U</button><button class="btn" id="newPlaylist">＋ New playlist</button></div></div></div><input id="m3uInput" type="file" accept=".m3u,.m3u8,audio/x-mpegurl,audio/mpegurl" hidden>
+<div class="panel" id="playlistList"><div class="empty">No playlists yet. Create one to get started.</div></div>
+</section>
+<section id="settingsPage" class="hidden">
+<div class="page-head"><div><h2>Settings</h2><p class="sub">Application preferences and export information.</p></div></div>
+<div class="panel"><b>Appearance</b><p class="sub" style="margin:5px 0 13px">Choose the interface style.</p><div class="actions"><button class="btn small" id="burgundyTheme">Burgundy</button><button class="btn secondary small" id="amoledTheme">AMOLED black</button><button class="btn secondary small" id="materialTheme">Custom Color</button></div><div id="materialControls" class="hidden" style="margin-top:16px"><label for="materialColor" class="sub" style="display:block;margin-bottom:8px">Dynamic accent color</label><div class="row"><input id="materialColor" type="color" value="#7894c8" style="width:54px;height:44px;padding:4px;background:var(--surface2);border:1px solid var(--line);border-radius:12px"><span class="sub">Choose any accent color. The interface palette updates automatically.</span></div><label class="row" style="margin-top:14px;gap:10px;cursor:pointer"><input id="customAmoled" type="checkbox" style="width:18px;height:18px;accent-color:var(--accent)"><span><b style="font-size:13px">AMOLED black background</b><span class="sub" style="display:block">Keep your custom accent colors while using pure black backgrounds.</span></span></label></div></div>
+<div class="panel"><b>About metadata</b><p class="sub" style="margin-top:8px">The library reads embedded tags and artwork locally when supported. Metadata and embedded artwork are read locally with TagLib-Wasm 2.5.0. Supported formats include MP3, AAC, M4A/MP4, FLAC, OGG, OPUS, WAV, AIFF, APE, DSF, DSDIFF and more. Available fields depend on the tags embedded in each file.</p></div>
+<div class="panel" id="diagnosticsPanel"><b>Nocturne Diagnostics</b><p class="sub" style="margin-top:6px">Local troubleshooting log for application errors, metadata-reading failures, scan speed and library cache.</p><div class="diag-stats"><div class="diag-stat"><b id="diagTotal">0</b><span>Log entries</span></div><div class="diag-stat"><b id="diagErrors">0</b><span>Errors</span></div><div class="diag-stat"><b id="diagWarnings">0</b><span>Warnings</span></div></div><div class="actions"><button class="btn small" id="diagExport">Export .txt</button><button class="btn secondary small" id="diagCopy">Copy report</button><button class="btn ghost small" id="diagClear">Clear logs</button></div><p class="diag-note">Logs stay in this browser and are never sent automatically. The report can contain file names and technical error messages; review it before sharing.</p></div>
+<div class="panel"><b>About M3U export</b><p class="sub" style="margin-top:8px">Playlists use relative paths from the selected music folder, for example:</p><code style="display:block;background:var(--bg);padding:12px;border-radius:12px;font-size:12px;white-space:pre-wrap">#EXTM3U
+#EXTINF:-1,Track title
+Artist/Album/track.flac</code><p class="sub" style="margin:12px 0 0">Keep the same folder structure when transferring music and playlists to your device.</p></div>
+<div class="panel"><b>Local data</b><p class="sub" style="margin:5px 0 13px">Playlists, library metadata and artwork cache are stored in this browser when storage is available. The first scan reads every file; later scans reuse unchanged metadata. Removing tracks never deletes source files.</p><button class="btn ghost small" id="resetData">Reset playlists and settings</button></div>
+</section>
+</main><footer>Nocturne M3U Manager 1.4.4 · Browser edition</footer>
+</div>
+<dialog id="modal"><div class="dialog-inner" id="modalContent"></div></dialog>
+<div id="toast" class="toast hidden" role="status"></div>
+<script type="module">
+import { readTags, readPictures } from "./taglib/simple.browser.js";
+(()=>{
+const $=id=>document.getElementById(id);
+const DIAG_KEY="nocturne_diagnostics_v1",DIAG_LIMIT=300;
+let diagnosticLogs=[];
+try{const saved=JSON.parse(localStorage.getItem(DIAG_KEY)||"[]");if(Array.isArray(saved))diagnosticLogs=saved.slice(-DIAG_LIMIT)}catch{}
+function diagLog(level,event,details={}){
+ const entry={time:new Date().toISOString(),level,event,details};
+ diagnosticLogs.push(entry);if(diagnosticLogs.length>DIAG_LIMIT)diagnosticLogs=diagnosticLogs.slice(-DIAG_LIMIT);
+ try{localStorage.setItem(DIAG_KEY,JSON.stringify(diagnosticLogs))}catch{}
+ updateDiagnostics();
+}
+function diagnosticReport(){
+ const errors=diagnosticLogs.filter(x=>x.level==="error").length,warnings=diagnosticLogs.filter(x=>x.level==="warning").length;
+ return ["Nocturne M3U Manager Diagnostics","App version: 1.4.4","Metadata engine: TagLib-Wasm 2.5.0",`Generated: ${new Date().toISOString()}`,`Entries: ${diagnosticLogs.length} | Errors: ${errors} | Warnings: ${warnings}`,"",...diagnosticLogs.map(x=>`[${x.time}] ${x.level.toUpperCase()} ${x.event} ${JSON.stringify(x.details)}`)].join("\n");
+}
+function updateDiagnostics(){
+ const total=$("diagTotal"),errors=$("diagErrors"),warnings=$("diagWarnings");
+ if(!total)return;
+ total.textContent=diagnosticLogs.length;errors.textContent=diagnosticLogs.filter(x=>x.level==="error").length;warnings.textContent=diagnosticLogs.filter(x=>x.level==="warning").length;
+}
+window.addEventListener("error",e=>diagLog("error","javascript_error",{message:e.message||"Unknown error",file:e.filename||"",line:e.lineno||0,column:e.colno||0}));
+window.addEventListener("unhandledrejection",e=>diagLog("error","unhandled_promise_rejection",{message:String(e.reason?.stack||e.reason||"Unknown rejection")}));
+
+// Persistent library metadata/artwork cache. Original audio files are never copied or modified.
+const LIB_DB_NAME="nocturne_library_v143",LIB_DB_VERSION=1,LIB_STORE="records";
+let libraryDb=null,libraryDbReady=null,activeFolderKey="",scanInProgress=false;
+function openLibraryDb(){
+ if(!("indexedDB" in window))return Promise.reject(new Error("IndexedDB is unavailable"));
+ if(libraryDbReady)return libraryDbReady;
+ libraryDbReady=new Promise((resolve,reject)=>{
+  const request=indexedDB.open(LIB_DB_NAME,LIB_DB_VERSION);
+  request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains(LIB_STORE))db.createObjectStore(LIB_STORE,{keyPath:"id"})};
+  request.onsuccess=()=>{libraryDb=request.result;libraryDb.onversionchange=()=>libraryDb.close();resolve(libraryDb)};
+  request.onerror=()=>reject(request.error||new Error("Could not open IndexedDB"));
+ });
+ return libraryDbReady;
+}
+async function dbGet(id){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readonly"),r=tx.objectStore(LIB_STORE).get(id);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
+async function dbPut(value){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readwrite");tx.objectStore(LIB_STORE).put(value);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error||new Error("IndexedDB write failed"));tx.onabort=()=>reject(tx.error||new Error("IndexedDB write aborted"))})}
+async function dbDelete(id){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readwrite");tx.objectStore(LIB_STORE).delete(id);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error)})}
+async function dbGetMany(ids){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readonly"),store=tx.objectStore(LIB_STORE),requests=ids.map(id=>store.get(id));Promise.all(requests.map(r=>new Promise((res,rej)=>{r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)}))).then(resolve,reject);tx.onerror=()=>reject(tx.error)})}
+function cacheId(folder,path){return "track|"+folder+"|"+path}
+function plainTrack(t){return {title:t.title||"",artist:t.artist||"",album:t.album||"",genre:t.genre||"",trackNo:t.trackNo||"",year:t.year||"",cover:t.cover||"",path:t.path||"",cacheId:t.cacheId||"",sourceSize:t.sourceSize??null,n>
 <section id="playlistsPage" class="hidden">
 <div class="page-head"><div><h2>Playlists</h2><p class="sub">Create and export M3U files.</p></div><div class="actions"><select class="sort-select" id="playlistSort" aria-label="Sort playlists" style="max-width:190px"><option value="name-asc">Name: A–Z</option><option value="name-desc">Name: Z–A</option><option value="count-asc">Tracks: fewest first</option><option value="count-desc">Tracks: most first</option></select><button class="btn" id="newPlaylist">＋ New</button></div></div>
 <div class="panel" id="playlistList"><div class="empty">No playlists yet. Create one to get started.</div></div>
