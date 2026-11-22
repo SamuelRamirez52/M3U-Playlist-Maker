@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100a0d">
+<title>Nocturne M3U Manager 1.4.4</title>
+<style>
+:root{color-scheme:dark;--bg:#100a0d;--surface:#1d1319;--surface2:#281a22;--primary:#642b40;--accent:#963d56;--soft:#b8798c;--text:#f0e7ea;--muted:#b6a4ab;--line:#49313b;--danger:#e5a0a9}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);transition:background-color .18s ease;color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input,select{font:inherit}button{border:0;cursor:pointer;color:inherit}.app{max-width:1000px;margin:auto;padding:0 16px 100px}
+header{padding:25px 4px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;display:grid;place-items:center;color:var(--text);background:transparent;flex:0 0 42px}.logo svg{display:block;width:32px;height:32px;fill:currentColor}
+h1{font-size:18px;margin:0;letter-spacing:.2px}header p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.pill{border:1px solid var(--line);border-radius:99px;padding:7px 10px;color:var(--muted);font-size:12px}
+nav{display:flex;gap:6px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:18px;position:sticky;top:8px;z-index:5;backdrop-filter:blur(16px)}
+nav button{flex:1;background:transparent;color:var(--muted);padding:11px 8px;border-radius:13px;font-weight:600}
+nav button.active{background:var(--primary);color:white}
+main{padding-top:22px}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+h2{font-size:23px;margin:0 0 4px}.sub{color:var(--muted);font-size:13px;margin:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:17px;margin:14px 0}
+.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.wrap{flex-wrap:wrap}
+.btn{background:var(--primary);padding:11px 15px;border-radius:13px;font-weight:650}.btn.secondary{background:var(--surface2);border:1px solid var(--line)}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}.btn:disabled{opacity:.45;cursor:not-allowed}
+input[type=text]{min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--text);width:100%;outline:none}input:focus{border-color:var(--soft)}
+.filepick{display:block;text-align:center;border:1px dashed var(--soft);border-radius:17px;padding:22px 14px;background:rgba(150,61,86,.09)}
+.filepick strong{display:block;font-size:15px;margin-bottom:5px}.filepick span{color:var(--muted);font-size:12px}.filepick input{display:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.stat{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:12px}.stat b{display:block;font-size:20px}.stat span{font-size:11px;color:var(--muted)}
+.search{margin:12px 0}
+.view-tabs{display:flex;gap:7px;overflow-x:auto;padding:3px 0 8px;scrollbar-width:none}.view-tabs button{white-space:nowrap;background:var(--surface2);border:1px solid var(--line);color:var(--muted);padding:9px 13px;border-radius:12px;font-size:13px;font-weight:650}.view-tabs button.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.track-list{min-width:0}.track{display:flex;align-items:center;gap:11px;padding:11px 2px;border-bottom:1px solid rgba(73,49,59,.65);min-width:0;max-width:100%}.track:last-child{border:0}
+.track input{accent-color:var(--soft);width:18px;height:18px;flex-shrink:0}.track-remove{flex-shrink:0;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:6px 8px;font-size:11px}.track-remove:active{background:var(--surface2)}.track-info{min-width:0;flex:1;overflow:hidden}.track-title{font-weight:600;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.35}.track-path{display:block;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cover{width:54px;height:54px;flex:0 0 54px;object-fit:cover;border-radius:11px;background:linear-gradient(145deg,#583044,#21151c);border:1px solid var(--line)}.cover.large{width:100%;height:auto;aspect-ratio:1;flex:auto;border-radius:14px}
+.cover-placeholder{display:grid;place-items:center;color:#d9b9c5;font-size:21px;background:linear-gradient(145deg,#583044,#21151c)}
+.group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.group-card{min-width:0;background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:10px;text-align:left}.group-card b{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.group-card span{display:block;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{text-align:center;color:var(--muted);padding:28px 10px}.playlist{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.playlist:last-child{border:0}.playlist-icon{width:42px;height:42px;border-radius:13px;background:var(--surface2);display:grid;place-items:center;font-size:19px}.playlist-info{flex:1;min-width:0}.playlist-info b{display:block}.playlist-info span{font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:12px;padding:8px 10px;border-radius:10px}.playlist-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;width:100%;margin-top:12px}.playlist-sort-control{display:flex;align-items:center;gap:10px;min-width:0}.playlist-sort-control label{font-size:13px;font-weight:650;color:var(--muted);white-space:nowrap}.playlist-sort-control .sort-select{width:100%;min-height:44px;font-size:13px}.playlist-primary-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.playlist-primary-actions .btn{min-height:44px;padding:10px 12px;white-space:nowrap}.playlist .actions{flex-wrap:nowrap;flex-shrink:0}.playlist .actions .btn{white-space:nowrap;min-height:38px}.dialog-actions button{flex:1 1 auto;min-width:90px;min-height:42px;white-space:nowrap}.sort-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:2px 0 12px}.sort-row label{font-size:12px;color:var(--muted);white-space:nowrap}.sort-select{min-width:0;max-width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:11px;color:var(--text);padding:9px 10px;font:inherit;font-size:12px;flex:1}.sort-select:focus{outline:1px solid var(--soft)}
+footer{color:var(--muted);font-size:11px;text-align:center;margin-top:28px}
+dialog{width:min(440px,calc(100% - 28px));max-height:min(82dvh,700px);overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--surface);color:var(--text);padding:0;box-shadow:0 24px 80px #000b}
+dialog::backdrop{background:#0009;backdrop-filter:blur(4px)}.dialog-inner{padding:22px}.dialog-inner h3{margin:0 0 7px;font-size:19px}.dialog-inner p{color:var(--muted);font-size:13px;margin:0 0 18px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;flex-wrap:wrap}
+.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:#34232c;border:1px solid var(--line);border-radius:99px;padding:11px 16px;box-shadow:0 8px 30px #0008;z-index:10;max-width:calc(100% - 30px);font-size:13px}
+.hidden{display:none!important}
+.diag-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.diag-stat{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px}.diag-stat b{display:block;font-size:19px}.diag-stat span{font-size:11px;color:var(--muted)}.diag-note{font-size:12px;color:var(--muted);margin-top:10px}
+@media(min-width:700px){.app{padding-left:24px;padding-right:24px}nav{max-width:520px}.track-list{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}.track{min-width:0}.group-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.playlist-tools{grid-template-columns:minmax(240px,1fr) auto;align-items:end;margin-top:0;width:auto}.playlist-primary-actions{grid-template-columns:auto auto}.playlist-primary-actions .btn{min-width:120px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand"><div class="logo" role="img" aria-label="Nocturne"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.7 14.2A8.8 8.8 0 0 1 9.8 3.3 9 9 0 1 0 20.7 14.2Z"/></svg></div><div><h1>Nocturne M3U Manager</h1><p>M3U MANAGER</p></div></div></header>
+<nav aria-label="Main navigation"><button class="active" data-page="library">Library</button><button data-page="playlists">Playlists</button><button data-page="settings">Settings</button></nav>
+<main>
+<section id="libraryPage">
+<div class="page-head"><div><h2>Music library</h2><p class="sub">Browse your music by songs, albums, artists and genres.</p></div></div>
+<div class="panel">
+<label class="filepick"><input id="folderInput" type="file" multiple webkitdirectory directory accept="audio/*,.flac,.mp3,.wav,.m4a,.aac,.ogg,.opus,.wma,.aiff,.ape,.dsf,.dff,.wv,.tta,.mpc,.shn"><strong>＋ Select music folder</strong><span>Choose the folder containing your music.</span></label>
+<div class="row between wrap" style="margin-top:13px"><span class="sub" id="folderStatus">No folder selected yet</span><button class="btn secondary small" id="clearLibrary">Clear library</button></div>
+</div>
+<div class="stats"><div class="stat"><b id="trackCount">0</b><span>Audio tracks</span></div><div class="stat"><b id="selectedCount">0</b><span>Selected</span></div><div class="stat"><b id="playlistCount">0</b><span>Playlists</span></div></div>
+<div class="row between wrap"><div><b id="viewHeading">Songs</b><div class="sub" id="trackHint">Select a folder to begin</div></div><div class="actions"><button class="btn ghost small" id="selectAll">Select all</button><button class="btn small hidden" id="addAlbum">Add album</button><button class="btn small" id="addSelected" disabled>Add selected</button><button class="btn secondary small" id="removeSelected" disabled>Remove selected</button></div></div>
+<input class="search" id="searchInput" type="text" placeholder="Search tracks, artists, albums, genres or years…" aria-label="Search library">
+<div class="view-tabs" id="viewTabs"><button class="active" data-view="songs">Songs</button><button data-view="albums">Albums</button><button data-view="artists">Artists</button><button data-view="genres">Genres</button></div>
+<div class="sort-row"><label for="librarySort">Sort by</label><select class="sort-select" id="librarySort" aria-label="Sort library"></select></div>
+<div class="panel" style="padding:8px 14px"><div id="trackList" class="track-list"><div class="empty">Your library is empty.<br>Select your music folder to get started.</div></div><div id="groupList" class="group-grid hidden"></div></div>
+</section>
+<section id="playlistsPage" class="hidden">
+<div class="page-head" style="display:block"><div><h2>Playlists</h2><p class="sub">Import, create and export M3U files.</p></div><div class="playlist-tools"><div class="playlist-sort-control"><label for="playlistSort">Sort playlists</label><select class="sort-select" id="playlistSort" aria-label="Sort playlists"><option value="name-asc">Name: A–Z</option><option value="name-desc">Name: Z–A</option><option value="count-asc">Tracks: fewest first</option><option value="count-desc">Tracks: most first</option></select></div><div class="playlist-primary-actions"><button class="btn secondary" id="importPlaylist">Import M3U</button><button class="btn" id="newPlaylist">＋ New playlist</button></div></div></div><input id="m3uInput" type="file" accept=".m3u,.m3u8,audio/x-mpegurl,audio/mpegurl" hidden>
+<div class="panel" id="playlistList"><div class="empty">No playlists yet. Create one to get started.</div></div>
+</section>
+<section id="settingsPage" class="hidden">
+<div class="page-head"><div><h2>Settings</h2><p class="sub">Application preferences and export information.</p></div></div>
+<div class="panel"><b>Appearance</b><p class="sub" style="margin:5px 0 13px">Choose the interface style.</p><div class="actions"><button class="btn small" id="burgundyTheme">Burgundy</button><button class="btn secondary small" id="amoledTheme">AMOLED black</button><button class="btn secondary small" id="materialTheme">Custom Color</button></div><div id="materialControls" class="hidden" style="margin-top:16px"><label for="materialColor" class="sub" style="display:block;margin-bottom:8px">Dynamic accent color</label><div class="row"><input id="materialColor" type="color" value="#7894c8" style="width:54px;height:44px;padding:4px;background:var(--surface2);border:1px solid var(--line);border-radius:12px"><span class="sub">Choose any accent color. The interface palette updates automatically.</span></div><label class="row" style="margin-top:14px;gap:10px;cursor:pointer"><input id="customAmoled" type="checkbox" style="width:18px;height:18px;accent-color:var(--accent)"><span><b style="font-size:13px">AMOLED black background</b><span class="sub" style="display:block">Keep your custom accent colors while using pure black backgrounds.</span></span></label></div></div>
+<div class="panel"><b>About metadata</b><p class="sub" style="margin-top:8px">The library reads embedded tags and artwork locally when supported. Metadata and embedded artwork are read locally with TagLib-Wasm 2.5.0. Supported formats include MP3, AAC, M4A/MP4, FLAC, OGG, OPUS, WAV, AIFF, APE, DSF, DSDIFF and more. Available fields depend on the tags embedded in each file.</p></div>
+<div class="panel" id="diagnosticsPanel"><b>Nocturne Diagnostics</b><p class="sub" style="margin-top:6px">Local troubleshooting log for application errors, metadata-reading failures, scan speed and library cache.</p><div class="diag-stats"><div class="diag-stat"><b id="diagTotal">0</b><span>Log entries</span></div><div class="diag-stat"><b id="diagErrors">0</b><span>Errors</span></div><div class="diag-stat"><b id="diagWarnings">0</b><span>Warnings</span></div></div><div class="actions"><button class="btn small" id="diagExport">Export .txt</button><button class="btn secondary small" id="diagCopy">Copy report</button><button class="btn ghost small" id="diagClear">Clear logs</button></div><p class="diag-note">Logs stay in this browser and are never sent automatically. The report can contain file names and technical error messages; review it before sharing.</p></div>
+<div class="panel"><b>About M3U export</b><p class="sub" style="margin-top:8px">Playlists use relative paths from the selected music folder, for example:</p><code style="display:block;background:var(--bg);padding:12px;border-radius:12px;font-size:12px;white-space:pre-wrap">#EXTM3U
+#EXTINF:-1,Track title
+Artist/Album/track.flac</code><p class="sub" style="margin:12px 0 0">Keep the same folder structure when transferring music and playlists to your device.</p></div>
+<div class="panel"><b>Local data</b><p class="sub" style="margin:5px 0 13px">Playlists, library metadata and artwork cache are stored in this browser when storage is available. The first scan reads every file; later scans reuse unchanged metadata. Removing tracks never deletes source files.</p><button class="btn ghost small" id="resetData">Reset playlists and settings</button></div>
+</section>
+</main><footer>Nocturne M3U Manager 1.4.4 · Browser edition</footer>
+</div>
+<dialog id="modal"><div class="dialog-inner" id="modalContent"></div></dialog>
+<div id="toast" class="toast hidden" role="status"></div>
+<script type="module">
+import { readTags, readPictures } from "./taglib/simple.browser.js";
+(()=>{
+const $=id=>document.getElementById(id);
+const DIAG_KEY="nocturne_diagnostics_v1",DIAG_LIMIT=300;
+let diagnosticLogs=[];
+try{const saved=JSON.parse(localStorage.getItem(DIAG_KEY)||"[]");if(Array.isArray(saved))diagnosticLogs=saved.slice(-DIAG_LIMIT)}catch{}
+function diagLog(level,event,details={}){
+ const entry={time:new Date().toISOString(),level,event,details};
+ diagnosticLogs.push(entry);if(diagnosticLogs.length>DIAG_LIMIT)diagnosticLogs=diagnosticLogs.slice(-DIAG_LIMIT);
+ try{localStorage.setItem(DIAG_KEY,JSON.stringify(diagnosticLogs))}catch{}
+ updateDiagnostics();
+}
+function diagnosticReport(){
+ const errors=diagnosticLogs.filter(x=>x.level==="error").length,warnings=diagnosticLogs.filter(x=>x.level==="warning").length;
+ return ["Nocturne M3U Manager Diagnostics","App version: 1.4.4","Metadata engine: TagLib-Wasm 2.5.0",`Generated: ${new Date().toISOString()}`,`Entries: ${diagnosticLogs.length} | Errors: ${errors} | Warnings: ${warnings}`,"",...diagnosticLogs.map(x=>`[${x.time}] ${x.level.toUpperCase()} ${x.event} ${JSON.stringify(x.details)}`)].join("\n");
+}
+function updateDiagnostics(){
+ const total=$("diagTotal"),errors=$("diagErrors"),warnings=$("diagWarnings");
+ if(!total)return;
+ total.textContent=diagnosticLogs.length;errors.textContent=diagnosticLogs.filter(x=>x.level==="error").length;warnings.textContent=diagnosticLogs.filter(x=>x.level==="warning").length;
+}
+window.addEventListener("error",e=>diagLog("error","javascript_error",{message:e.message||"Unknown error",file:e.filename||"",line:e.lineno||0,column:e.colno||0}));
+window.addEventListener("unhandledrejection",e=>diagLog("error","unhandled_promise_rejection",{message:String(e.reason?.stack||e.reason||"Unknown rejection")}));
+
+// Persistent library metadata/artwork cache. Original audio files are never copied or modified.
+const LIB_DB_NAME="nocturne_library_v143",LIB_DB_VERSION=1,LIB_STORE="records";
+let libraryDb=null,libraryDbReady=null,activeFolderKey="",scanInProgress=false;
+function openLibraryDb(){
+ if(!("indexedDB" in window))return Promise.reject(new Error("IndexedDB is unavailable"));
+ if(libraryDbReady)return libraryDbReady;
+ libraryDbReady=new Promise((resolve,reject)=>{
+  const request=indexedDB.open(LIB_DB_NAME,LIB_DB_VERSION);
+  request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains(LIB_STORE))db.createObjectStore(LIB_STORE,{keyPath:"id"})};
+  request.onsuccess=()=>{libraryDb=request.result;libraryDb.onversionchange=()=>libraryDb.close();resolve(libraryDb)};
+  request.onerror=()=>reject(request.error||new Error("Could not open IndexedDB"));
+ });
+ return libraryDbReady;
+}
+async function dbGet(id){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readonly"),r=tx.objectStore(LIB_STORE).get(id);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
+async function dbPut(value){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readwrite");tx.objectStore(LIB_STORE).put(value);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error||new Error("IndexedDB write failed"));tx.onabort=()=>reject(tx.error||new Error("IndexedDB write aborted"))})}
+async function dbDelete(id){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readwrite");tx.objectStore(LIB_STORE).delete(id);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error)})}
+async function dbGetMany(ids){const db=await openLibraryDb();return new Promise((resolve,reject)=>{const tx=db.transaction(LIB_STORE,"readonly"),store=tx.objectStore(LIB_STORE),requests=ids.map(id=>store.get(id));Promise.all(requests.map(r=>new Promise((res,rej)=>{r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)}))).then(resolve,reject);tx.onerror=()=>reject(tx.error)})}
+function cacheId(folder,path){return "track|"+folder+"|"+path}
+function plainTrack(t){return {title:t.title||"",artist:t.artist||"",album:t.album||"",genre:t.genre||"",trackNo:t.trackNo||"",year:t.year||"",cover:t.cover||"",path:t.path||"",cacheId:t.cacheId||"",sourceSize:t.sourceSize??null,sourceModified:t.sourceModified??null}}
+async function saveLibrarySnapshot(){
+ try{await dbPut({id:"__library__",folder:activeFolderKey,trackIds:tracks.map(t=>t.cacheId).filter(Boolean),savedAt:Date.now()})}
+ catch(error){diagLog("warning","library_snapshot_save_failed",{message:String(error?.message||error)});}
+}
+async function restoreLibrarySnapshot(){
+ try{
+  const saved=await dbGet("__library__");
+  if(!saved||!Array.isArray(saved.trackIds)||!saved.trackIds.length)return;
+  activeFolderKey=saved.folder||"";
+  const cachedTracks=await dbGetMany(saved.trackIds);
+  tracks=cachedTracks.filter(Boolean).map(t=>({...t,file:null}));selected.clear();
+  if(!tracks.length)return;
+  if(tracks.length!==saved.trackIds.length)diagLog("warning","library_restore_partial",{expected:saved.trackIds.length,restored:tracks.length});
+  const root=activeFolderKey||"Saved library";
+  $("folderStatus").textContent=`${root} · ${tracks.length} saved tracks · select the folder to reconnect files`;
+  updateStats();renderTracks();
+  diagLog("info","library_restored",{tracks:tracks.length,folder:root});
+ }catch(error){diagLog("warning","library_restore_failed",{message:String(error?.message||error)});}
+}
+async function removeTracksByPaths(paths){
+ const removing=new Set(paths);const removed=tracks.filter(t=>removing.has(t.path));
+ if(!removed.length)return;
+ tracks=tracks.filter(t=>!removing.has(t.path));for(const p of removing)selected.delete(p);
+ for(const t of removed){if(t.cacheId){try{await dbDelete(t.cacheId)}catch(error){diagLog("warning","cache_delete_failed",{path:t.path,message:String(error?.message||error)})}}}
+ await saveLibrarySnapshot();updateStats();renderTracks();
+ diagLog("info","tracks_removed_from_library",{removed:removed.length,remaining:tracks.length,originalFilesUntouched:true,playlistsUnchanged:true});
+ toast(`${removed.length} tracks removed from library`);
+}
+
+
+const audioExt=new Set(["flac","mp3","wav","m4a","mp4","aac","ogg","opus","wma","aiff","ape","dsf","dff","wv","tta","mpc","shn","spx","oga","mka","mkv","mod","s3m","it","xm"]);
+let tracks=[],selected=new Set(),playlists=JSON.parse(localStorage.getItem("em_playlists")||"[]"),activePlaylist=null,theme=localStorage.getItem("em_theme")||"burgundy",materialSeed=localStorage.getItem("em_material_seed")||"#7894c8",customAmoled=localStorage.getItem("em_custom_amoled")==="true",view="songs",groupFilter=null,groupReturnView="albums",librarySort="title-asc";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const save=()=>localStorage.setItem("em_playlists",JSON.stringify(playlists));
+function toast(s){$("toast").textContent=s;$("toast").classList.remove("hidden");setTimeout(()=>$("toast").classList.add("hidden"),2600)}
+function hexToHsl(hex){let r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255,max=Math.max(r,g,b),min=Math.min(r,g,b),h=0,s=0,l=(max+min)/2;if(max!==min){let d=max-min;s=l>.5?d/(2-max-min):d/(max+min);switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4}h*=60}return[h,s*100,l*100]}
+function applyMaterialPalette(){
+ let [h]=hexToHsl(materialSeed),root=document.documentElement,body=document.body;
+ root.style.setProperty("--bg",customAmoled?"#000000":`hsl(${h} 18% 11%)`);
+ root.style.setProperty("--surface",customAmoled?"#101010":`hsl(${h} 16% 16%)`);
+ root.style.setProperty("--surface2",customAmoled?"#1b1b1b":`hsl(${h} 17% 21%)`);
+ root.style.setProperty("--primary",`hsl(${h} 42% 34%)`);
+ root.style.setProperty("--accent",`hsl(${h} 48% 54%)`);
+ root.style.setProperty("--soft",`hsl(${h} 65% 76%)`);
+ root.style.setProperty("--line",`hsl(${h} 18% 30%)`);
+ root.style.setProperty("--text","#f2edf7");
+ root.style.setProperty("--muted","#c0b8c9");
+ root.style.colorScheme="dark";
+ const background=customAmoled?"#000000":`hsl(${h} 18% 11%)`;
+ root.style.backgroundColor=background;
+ if(body)body.style.backgroundColor=background;
+ const meta=document.querySelector('meta[name="theme-color"]');
+ if(meta)meta.setAttribute("content",background);
+}
+function applyTheme(t){
+ if(!["burgundy","amoled","material"].includes(t))t="burgundy";
+ theme=t;
+ localStorage.setItem("em_theme",t);
+ const root=document.documentElement,body=document.body;
+ $("materialControls").classList.toggle("hidden",t!=="material");
+ if(t==="material"){
+  applyMaterialPalette();
+  $("materialColor").value=materialSeed;
+  $("customAmoled").checked=customAmoled;
+ }else{
+  const palette=t==="amoled"
+   ?{"--bg":"#000000","--surface":"#101010","--surface2":"#1b1b1b","--primary":"#642b40","--accent":"#963d56","--soft":"#b8798c","--line":"#49313b","--text":"#f0e7ea","--muted":"#b6a4ab"}
+   :{"--bg":"#100a0d","--surface":"#1d1319","--surface2":"#281a22","--primary":"#642b40","--accent":"#963d56","--soft":"#b8798c","--line":"#49313b","--text":"#f0e7ea","--muted":"#b6a4ab"};
+  Object.entries(palette).forEach(([key,value])=>root.style.setProperty(key,value));
+ }
+ const background=getComputedStyle(root).getPropertyValue("--bg").trim()||"#100a0d";
+ root.style.backgroundColor=background;
+ body.style.backgroundColor=background;
+ root.style.colorScheme="dark";
+ const meta=document.querySelector('meta[name="theme-color"]');
+ if(meta)meta.setAttribute("content",background);
+ $("burgundyTheme").className="btn small"+(t==="burgundy"?"":" secondary");
+ $("amoledTheme").className="btn small"+(t==="amoled"?"":" secondary");
+ $("materialTheme").className="btn small"+(t==="material"?"":" secondary");
+} 
+function page(name){["library","playlists","settings"].forEach(p=>$(p+"Page").classList.toggle("hidden",p!==name));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===name));if(name==="playlists")renderPlaylists()}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>page(b.dataset.page)));
+function getAddableSelectedTracks(){
+ let candidates=groupFilter&&groupFilter.key==="album"?tracks.filter(t=>t.album===groupFilter.value):tracks;
+ return candidates.filter(t=>selected.has(t.path));
+}
+function updateStats(){
+ $("trackCount").textContent=tracks.length;
+ $("selectedCount").textContent=selected.size;
+ $("playlistCount").textContent=playlists.length;
+ $("addSelected").disabled=!getAddableSelectedTracks().length;$("removeSelected").disabled=selected.size===0;
+}
+function compareText(a,b){
+ return String(a??"").localeCompare(String(b??""),undefined,{numeric:true,sensitivity:"base"});
+}
+function compareNumber(a,b){
+ const x=parseFloat(String(a??"").match(/[0-9]+(?:\\.[0-9]+)?/)?.[0]||"");
+ const y=parseFloat(String(b??"").match(/[0-9]+(?:\\.[0-9]+)?/)?.[0]||"");
+ if(Number.isNaN(x)&&Number.isNaN(y))return 0;
+ if(Number.isNaN(x))return 1;
+ if(Number.isNaN(y))return -1;
+ return x-y;
+}
+function sortTrackList(list){
+ const [field,direction]=librarySort.split("-");
+ const sign=direction==="desc"?-1:1;
+ return list.sort((a,b)=>{
+  const result=(field==="trackNo"||field==="year")?compareNumber(a[field],b[field]):compareText(field==="path"?a.path:a[field],field==="path"?b.path:b[field]);
+  return result*sign||compareText(a.path,b.path);
+ });
+}
+function updateLibrarySortOptions(){
+ const select=$("librarySort");
+ const songOptions=[
+  ["title-asc","Title: A–Z"],["title-desc","Title: Z–A"],
+  ["artist-asc","Artist: A–Z"],["artist-desc","Artist: Z–A"],
+  ["album-asc","Album: A–Z"],["album-desc","Album: Z–A"],
+  ["genre-asc","Genre: A–Z"],["genre-desc","Genre: Z–A"],
+  ["year-asc","Release year: oldest first"],["year-desc","Release year: newest first"],
+  ["trackNo-asc","Track number: low to high"],["trackNo-desc","Track number: high to low"],
+  ["path-asc","File path: A–Z"],["path-desc","File path: Z–A"]
+ ];
+ const groupOptions=[
+  ["name-asc","Name: A–Z"],["name-desc","Name: Z–A"],
+  ["count-asc","Tracks: fewest first"],["count-desc","Tracks: most first"]
+ ];
+ const options=view==="songs"?songOptions:groupOptions;
+ if(!options.some(([value])=>value===librarySort))librarySort=view==="songs"?"title-asc":"name-asc";
+ select.innerHTML=options.map(([value,label])=>`<option value="${value}">${label}</option>`).join("");
+ select.value=librarySort;
+}
+
+function toBase64(bytes){let binary="";for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(binary)}
+function decodeText(bytes,enc){try{return new TextDecoder(enc||"utf-8").decode(bytes).replace(/\0/g,"").trim()}catch{return""}}
+function syncsafe(b){return ((b[0]&127)<<21)|((b[1]&127)<<14)|((b[2]&127)<<7)|(b[3]&127)}
+function parseID3(buf){
+ const u=new Uint8Array(buf);if(u.length<10||String.fromCharCode(...u.slice(0,3))!=="ID3")return{};
+ const major=u[3],flags=u[5],tagSize=syncsafe(u.slice(6,10));let pos=10,end=Math.min(u.length,10+tagSize),out={};
+ if(major!==3&&major!==4)return out;
+ if(flags&0x40){if(pos+4>end)return out;let ext=major===4?syncsafe(u.slice(pos,pos+4)):new DataView(buf).getUint32(pos);pos+=ext}
+ const map={TIT2:"title",TPE1:"artist",TALB:"album",TCON:"genre",TRCK:"trackNo",TYER:"year",TDRC:"year"};
+ while(pos+10<=end){
+  let id=String.fromCharCode(...u.slice(pos,pos+4));if(!/^[A-Z0-9]{4}$/.test(id))break;
+  let n=major===4?syncsafe(u.slice(pos+4,pos+8)):new DataView(buf).getUint32(pos+4);
+  let frameFlags=(u[pos+8]<<8)|u[pos+9];pos+=10;if(!n||pos+n>end)break;
+  let d=u.slice(pos,pos+n);pos+=n;
+  if(frameFlags&0x00c0)continue;
+  if(map[id]&&d.length>1){let enc=d[0],text=decodeText(d.slice(1),enc===0?"windows-1252":enc===3?"utf-8":enc===2?"utf-16be":"utf-16");out[map[id]]=text.split("\0")[0].replace(/^\(\d+\)/,"").trim()}
+  if(id==="APIC"&&d.length>8){
+   try{
+    let enc=d[0],i=1;while(i<d.length&&d[i]!==0)i++;let mime=decodeText(d.slice(1,i))||"image/jpeg";i++;
+    i+=1; // picture type
+    if(enc===1||enc===2){while(i+1<d.length&&!(d[i]===0&&d[i+1]===0))i+=2;i+=2}
+    else{while(i<d.length&&d[i]!==0)i++;i++}
+    if(i<d.length){let bytes=d.slice(i);out.cover=`data:${mime};base64,${toBase64(bytes)}`}
+   }catch{}
+  }
+ }
+ return out
+}
+function parseFlac(buf){
+ const u=new Uint8Array(buf),out={};
+ if(u.length<8||String.fromCharCode(...u.slice(0,4))!=="fLaC")return out;
+ let p=4,more=true;
+ const readLE=(view,offset)=>view.getUint32(offset,true);
+ const readBE=(view,offset)=>view.getUint32(offset,false);
+ const tagMap={
+  title:"title",artist:"artist",album:"album",albumartist:"artist",
+  artist_sort:"artist",albumartist_sort:"artist",genre:"genre",
+  tracknumber:"trackNo",track:"trackNo",date:"year",year:"year",
+  originaldate:"year"
+ };
+ while(more&&p+4<=u.length){
+  const h=u[p],type=h&127,len=(u[p+1]<<16)|(u[p+2]<<8)|u[p+3];
+  p+=4;
+  if(p+len>u.length)break;
+  const d=u.subarray(p,p+len),view=new DataView(d.buffer,d.byteOffset,d.byteLength);
+  if(type===4&&len>=8){
+   try{
+    let q=0;
+    const vendorLen=readLE(view,q);q+=4;
+    if(vendorLen>d.length-q)throw Error("Invalid FLAC vendor length");
+    q+=vendorLen;
+    if(q+4>d.length)throw Error("Missing FLAC comment count");
+    const count=readLE(view,q);q+=4;
+    for(let j=0;j<count&&q+4<=d.length;j++){
+     const commentLen=readLE(view,q);q+=4;
+     if(commentLen>d.length-q)break;
+     const item=decodeText(d.subarray(q,q+commentLen));q+=commentLen;
+     const ix=item.indexOf("=");
+     if(ix<=0)continue;
+     const key=item.slice(0,ix).trim().toLowerCase();
+     const value=item.slice(ix+1).trim();
+     const field=tagMap[key];
+     if(field&&value&&!out[field])out[field]=value;
+    }
+   }catch{}
+  }else if(type===6&&len>=32){
+   try{
+    let q=0;
+    q+=4;
+    if(q+4>d.length)throw Error();
+    const mimeLen=readBE(view,q);q+=4;
+    if(mimeLen>d.length-q)throw Error();
+    const mime=decodeText(d.subarray(q,q+mimeLen))||"image/jpeg";q+=mimeLen;
+    if(q+4>d.length)throw Error();
+    const descLen=readBE(view,q);q+=4;
+    if(descLen>d.length-q)throw Error();
+    q+=descLen;
+    if(q+20>d.length)throw Error();
+    q+=16;
+    const dataLen=readBE(view,q);q+=4;
+    if(dataLen>0&&dataLen<=d.length-q){
+     const bytes=d.subarray(q,q+dataLen);
+     out.cover=`data:${mime};base64,${toBase64(bytes)}`;
+    }
+   }catch{}
+  }
+  p+=len;
+  more=!(h&128);
+ }
+ return out
+}
+
+function parseAPE(buf){
+ const u=new Uint8Array(buf),out={};
+ const decoder=new TextDecoder("utf-8");
+ // APEv2 tags normally sit at the end of the audio file. Search backwards
+ // because some files also contain a trailing ID3v1 block.
+ let footer=-1;
+ for(let i=u.length-32;i>=Math.max(0,u.length-160*1024);i--){
+  if(String.fromCharCode(...u.subarray(i,i+8))==="APETAGEX"){
+   const v=new DataView(u.buffer,u.byteOffset+i,32);
+   const version=v.getUint32(8,true),size=v.getUint32(12,true),count=v.getUint32(16,true);
+   if(version===2000&&size>=32&&size<=u.length){footer=i;break}
+  }
+ }
+ if(footer<0)return out;
+ try{
+  const fv=new DataView(u.buffer,u.byteOffset+footer,32);
+  const tagSize=fv.getUint32(12,true),itemCount=fv.getUint32(16,true);
+  let p=footer-(tagSize-32);
+  if(p<0||p>footer)return out;
+  const map={
+   title:"title",artist:"artist",album:"album",album_artist:"artist",
+   albumartist:"artist",genre:"genre",track:"trackNo",
+   tracknumber:"trackNo",year:"year",date:"year",recorded_date:"year"
+  };
+  for(let n=0;n<itemCount&&p+8<footer;n++){
+   const dv=new DataView(u.buffer,u.byteOffset+p,8);
+   const valueLength=dv.getUint32(0,true);
+   p+=8;
+   let keyEnd=p;
+   while(keyEnd<footer&&u[keyEnd]!==0)keyEnd++;
+   if(keyEnd>=footer)break;
+   const key=decoder.decode(u.subarray(p,keyEnd)).trim().toLowerCase();
+   p=keyEnd+1;
+   if(valueLength>footer-p)break;
+   const valueBytes=u.subarray(p,p+valueLength);
+   p+=valueLength;
+   const field=map[key];
+   if(field&&!out[field]){
+    const value=decoder.decode(valueBytes).replace(/\0/g,"").trim();
+    if(value)out[field]=value;
+   }
+  }
+ }catch{}
+ return out;
+}
+
+function firstTag(value){
+ if(Array.isArray(value))return String(value.find(v=>v!==null&&v!==undefined&&String(v).trim())??"").trim();
+ return value===null||value===undefined?"":String(value).trim();
+}
+function bytesToDataUrl(data,mimeType){
+ if(!data)return"";
+ const bytes=data instanceof Uint8Array?data:new Uint8Array(data);
+ if(!bytes.length)return"";
+ let binary="";
+ for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));
+ return `data:${mimeType||"image/jpeg"};base64,${btoa(binary)}`;
+}
+async function readMetadata(file){
+ try{
+  const tags=await readTags(file);
+  let pictures=[];
+  try{pictures=await readPictures(file)}catch(error){diagLog("warning","artwork_read_failed",{file:file.name,message:String(error?.message||error)})}
+  const cover=pictures.find(p=>p.type==="FrontCover")||pictures[0];
+  const date=firstTag(tags.date)||String(tags.year||"");
+  return{
+   title:firstTag(tags.title),
+   artist:firstTag(tags.artist)||firstTag(tags.albumArtist),
+   album:firstTag(tags.album),
+   genre:firstTag(tags.genre),
+   trackNo:firstTag(tags.trackNumber)||String(tags.track||""),
+   year:(date.match(/\d{4}/)||[])[0]||"",
+   cover:cover?bytesToDataUrl(cover.data,cover.mimeType):""
+  };
+ }catch(error){diagLog("error","metadata_read_failed",{file:file?.name||"unknown",message:String(error?.stack||error)});return{}}
+}
+
+function placeholder(title,large=false){return `<div class="cover cover-placeholder${large?" large":""}">${esc((title||"♫").trim().charAt(0).toUpperCase()||"♫")}</div>`}
+function coverMarkup(t,large=false){return t.cover?`<img class="cover${large?" large":""}" src="${t.cover}" alt="Album artwork" loading="lazy">`:large?placeholder(t.album||t.title,true):`<div class="cover cover-placeholder">♫</div>`}
+function renderTracks(){
+ let q=$("searchInput").value.trim().toLowerCase();
+ let list=tracks.filter(t=>(t.path+" "+t.title+" "+t.artist+" "+t.album+" "+t.genre+" "+t.year).toLowerCase().includes(q));
+ if(groupFilter)list=list.filter(t=>t[groupFilter.key]===groupFilter.value);
+ $("trackHint").textContent=tracks.length?`${list.length} of ${tracks.length} tracks`:"Select a folder to begin";
+ $("viewHeading").textContent=groupFilter?groupFilter.value:view[0].toUpperCase()+view.slice(1);
+ $("trackList").classList.toggle("hidden",view!=="songs");
+ $("groupList").classList.toggle("hidden",view==="songs");
+ if(view==="songs"){
+  sortTrackList(list);
+  if(!list.length){
+   $("trackList").innerHTML=`<div class="empty">${tracks.length?"No matching tracks.":"Your library is empty.<br>Select your music folder to get started."}</div>`;
+   return;
+  }
+  $("trackList").innerHTML=list.map(t=>`<div class="track"><input type="checkbox" aria-label="Select ${esc(t.title)}" data-path="${esc(t.path)}" ${selected.has(t.path)?"checked":""}>${coverMarkup(t)}<span class="track-info"><span class="track-title">${esc(t.title)}</span><span class="track-path">${esc([t.artist,t.album].filter(Boolean).join(" · ")||t.path)}</span></span><button class="track-remove" type="button" data-remove-path="${esc(t.path)}" aria-label="Remove ${esc(t.title)}">Remove</button></div>`).join("");
+  $("trackList").querySelectorAll('input[type="checkbox"]').forEach(c=>c.addEventListener("change",()=>{
+   if(c.checked)selected.add(c.dataset.path);else selected.delete(c.dataset.path);
+   updateStats();
+   if(groupFilter&&groupFilter.key==="album")syncViews();
+  }));
+  $("trackList").querySelectorAll("[data-remove-path]").forEach(b=>b.addEventListener("click",()=>{
+   const path=b.dataset.removePath;const track=tracks.find(t=>t.path===path);if(!track)return;
+   modal("Remove track from library?",`“${esc(track.title)}” will be removed from this library only. The original audio file and saved playlists will remain untouched.`,"",`<button class="btn ghost" id="cancelRemove">Cancel</button><button class="btn" id="confirmRemove">Remove</button>`);
+   $("cancelRemove").onclick=closeModal;$("confirmRemove").onclick=async()=>{closeModal();await removeTracksByPaths([path])};
+  }));
+  return;
+ }
+ let key=view==="albums"?"album":view==="artists"?"artist":"genre";
+ let groups=new Map();
+ list.forEach(t=>{
+  let name=(t[key]||("Unknown "+(key==="album"?"Album":key==="artist"?"Artist":"Genre"))).trim();
+  if(!groups.has(name))groups.set(name,[]);
+  groups.get(name).push(t);
+ });
+ if(!groups.size){
+  $("groupList").innerHTML='<div class="empty">Nothing to show in this category.</div>';
+  return;
+ }
+ const [sortField,sortDirection]=librarySort.split("-");
+ const sign=sortDirection==="desc"?-1:1;
+ const entries=[...groups.entries()].sort((a,b)=>{
+  const result=sortField==="count"?a[1].length-b[1].length:compareText(a[0],b[0]);
+  return result*sign||compareText(a[0],b[0]);
+ });
+ $("groupList").innerHTML=entries.map(([name,items])=>{
+  let first=items.find(x=>x.cover)||items[0];
+  return `<button class="group-card" data-group="${esc(name)}">${coverMarkup(first,true)}<b>${esc(name)}</b><span>${key==="album"?esc(first.artist||"Unknown artist")+" · ":""}${items.length} tracks</span></button>`;
+ }).join("");
+ $("groupList").querySelectorAll("[data-group]").forEach(b=>b.onclick=()=>{
+  groupReturnView=view;groupFilter={key,value:b.dataset.group};view="songs";
+  syncViews();renderTracks();
+ });
+}
+function syncViews(){document.querySelectorAll("#viewTabs button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));updateLibrarySortOptions();$("selectAll").classList.toggle("hidden",view!=="songs"||!!groupFilter);$("addSelected").classList.toggle("hidden",view!=="songs");$("addAlbum").classList.toggle("hidden",!(view==="songs"&&groupFilter&&groupFilter.key==="album"));$("addSelected").textContent=groupFilter&&groupFilter.key==="album"?"Add selected ("+getAddableSelectedTracks().length+")":"Add selected";if(groupFilter){$("viewHeading").textContent=groupFilter.value;let back=document.getElementById("backToGroups");if(!back){back=document.createElement("button");back.id="backToGroups";back.className="btn ghost small";back.textContent="← Back";$("viewHeading").parentElement.appendChild(back)}back.onclick=()=>{groupFilter=null;view=groupReturnView;syncViews();renderTracks()}}else{let back=document.getElementById("backToGroups");if(back)back.remove()}}
+document.querySelectorAll("#viewTabs button").forEach(b=>b.onclick=()=>{groupFilter=null;view=b.dataset.view;syncViews();renderTracks()});
+$("folderInput").addEventListener("change",async e=>{
+ const files=[...e.target.files];e.target.value="";
+ const audio=files.filter(f=>audioExt.has(f.name.split(".").pop().toLowerCase()));
+ const scanStarted=performance.now();
+ const folder=files[0]?.webkitRelativePath?.split("/")[0]||"Selected files";
+ activeFolderKey=folder;
+ diagLog("info","scan_started",{filesSelected:files.length,audioFiles:audio.length,concurrency:3,folder});
+ $("folderStatus").textContent=audio.length?`Preparing ${audio.length} audio files…`:"No supported audio files found";
+ tracks=[];selected.clear();groupFilter=null;view="songs";scanInProgress=true;
+ syncViews();updateStats();renderTracks();
+ let cacheHits=0,readCount=0,completed=0,writeErrors=0,nextIndex=0;
+ const cacheByPath=new Map();
+ try{
+  await openLibraryDb();
+  const jobs=audio.map(f=>{const rel=f.webkitRelativePath||f.name,parts=rel.split("/"),path=parts.length>1?parts.slice(1).join("/"):f.name;return {file:f,path,id:cacheId(folder,path)}});
+  const worker=async()=>{
+   while(true){const index=nextIndex++;if(index>=jobs.length)return;const job=jobs[index],f=job.file;
+    let meta=null,fromCache=false;
+    try{
+     const cached=await dbGet(job.id);
+     if(cached&&cached.sourceSize===f.size&&cached.sourceModified===f.lastModified){meta=cached;fromCache=true;cacheHits++}
+    }catch(error){diagLog("warning","metadata_cache_read_failed",{path:job.path,message:String(error?.message||error)})}
+    if(!meta){meta=await readMetadata(f);readCount++;}
+    const track={title:meta.title||f.name.replace(/\.[^.]+$/,""),artist:meta.artist||"",album:meta.album||"",genre:meta.genre||"",trackNo:meta.trackNo||"",year:meta.year||"",cover:meta.cover||"",path:job.path,file:f,cacheId:job.id,sourceSize:f.size,sourceModified:f.lastModified};
+    tracks.push(track);
+    if(!fromCache){try{await dbPut({id:job.id,...plainTrack(track),sourceSize:f.size,sourceModified:f.lastModified})}
+    catch(error){writeErrors++;if(writeErrors<=3)diagLog("warning","metadata_cache_write_failed",{path:job.path,message:String(error?.message||error)})}}
+    completed++;
+    if(completed%10===0||completed===jobs.length){
+     tracks.sort((a,b)=>a.path.localeCompare(b.path,undefined,{sensitivity:"base"}));
+     $("folderStatus").textContent=`Scanning… ${completed} of ${jobs.length} · cache ${cacheHits} · read ${readCount}`;
+     updateStats();renderTracks();
+     if(completed%30===0||completed===jobs.length)await saveLibrarySnapshot();
+    }
+   }
+  };
+  await Promise.all(Array.from({length:Math.min(3,jobs.length)},()=>worker()));
+  tracks.sort((a,b)=>a.path.localeCompare(b.path,undefined,{sensitivity:"base"}));
+  await saveLibrarySnapshot();
+  const coverCount=tracks.filter(t=>t.cover).length;
+  $("folderStatus").textContent=tracks.length?folder+" · "+tracks.length+" audio tracks · "+coverCount+" embedded covers · cache "+cacheHits:"No supported audio files found";
+  groupFilter=null;view="songs";syncViews();updateStats();renderTracks();
+  const scanDurationMs=Math.round(performance.now()-scanStarted);
+  diagLog("info","scan_completed",{audioFiles:audio.length,tracksLoaded:tracks.length,coversFound:coverCount,durationMs:scanDurationMs,cacheHits,metadataReads:readCount,concurrency:Math.min(3,jobs.length),cacheWriteErrors:writeErrors});
+  toast(tracks.length?`Loaded ${tracks.length} tracks · ${cacheHits} from cache`:"No supported audio files found");
+ }catch(error){
+  diagLog("error","scan_failed",{message:String(error?.stack||error),completed,audioFiles:audio.length});
+  $("folderStatus").textContent=`Scan interrupted · ${tracks.length} tracks loaded`;
+  await saveLibrarySnapshot();toast("Scan interrupted; loaded tracks were saved where possible");
+ }finally{scanInProgress=false;updateStats()}
+});
+$("searchInput").addEventListener("input",renderTracks);
+$("librarySort").addEventListener("change",()=>{
+ librarySort=$("librarySort").value;
+ renderTracks();
+});
+$("selectAll").addEventListener("click",()=>{let visible=tracks;if(groupFilter)visible=tracks.filter(t=>t[groupFilter.key]===groupFilter.value);if(selected.size===visible.length)selected.clear();else visible.forEach(t=>selected.add(t.path));renderTracks();updateStats()});
+$("removeSelected").addEventListener("click",()=>{
+ const paths=[...selected];if(!paths.length)return;
+ modal("Remove selected tracks?",`${paths.length} selected tracks will be removed from the library only. Original audio files and saved playlists will remain untouched.`,"",`<button class="btn ghost" id="cancelBulkRemove">Cancel</button><button class="btn" id="confirmBulkRemove">Remove ${paths.length}</button>`);
+ $("cancelBulkRemove").onclick=closeModal;$("confirmBulkRemove").onclick=async()=>{closeModal();await removeTracksByPaths(paths)};
+});
+$("clearLibrary").addEventListener("click",()=>{
+ modal("Clear music library?","This will remove the currently loaded tracks and their selection from the app. Your original music files and saved playlists will not be deleted.",'<p style="margin:0;color:var(--muted);font-size:13px">You can load the folder again whenever you want.</p>',`<button class="btn ghost" id="cancelClear">Cancel</button><button class="btn" id="confirmClear">Clear library</button>`);
+ $("cancelClear").onclick=closeModal;
+ $("confirmClear").onclick=async()=>{
+  tracks=[];selected.clear();activeFolderKey="";try{await dbDelete("__library__")}catch(error){diagLog("warning","library_clear_persist_failed",{message:String(error?.message||error)})}$("folderInput").value="";$("folderStatus").textContent="No folder selected yet";groupFilter=null;view="songs";syncViews();renderTracks();updateStats();closeModal();diagLog("info","library_cleared",{metadataCachePreserved:true});toast("Library cleared");
+ };
+});
+function modal(title,desc,body,buttons){$("modalContent").innerHTML=`<h3>${title}</h3><p>${desc}</p>${body}<div class="dialog-actions">${buttons}</div>`;$("modal").showModal()}
+function closeModal(){$("modal").close()}
+$("newPlaylist").addEventListener("click",()=>{modal("Create playlist","Choose a name for your new playlist.",'<input id="playlistName" type="text" maxlength="60" placeholder="Playlist name" autocomplete="off">',`<button class="btn ghost" id="cancelModal">Cancel</button><button class="btn" id="confirmModal">Create</button>`);$("cancelModal").onclick=closeModal;$("confirmModal").onclick=()=>{let n=$("playlistName").value.trim();if(!n){toast("Enter a playlist name");return}if(playlists.some(p=>p.name.toLowerCase()===n.toLowerCase())){toast("That playlist already exists");return}playlists.push({id:Date.now().toString(),name:n,tracks:[]});save();closeModal();renderPlaylists();updateStats();toast("Playlist created")};$("playlistName").focus()});
+
+function normalizeM3UPath(value){
+ return String(value||"").trim().replace(/^"|"$/g,"").replace(/\\/g,"/").replace(/^\.\//,"").replace(/\/+/g,"/").toLocaleLowerCase();
+}
+function parseM3U(text){
+ const lines=String(text||"").replace(/^\uFEFF/,"").split(/\r?\n/);
+ const entries=[];let pendingTitle="";
+ for(const raw of lines){
+  const line=raw.trim();if(!line)continue;
+  if(line.toUpperCase().startsWith("#EXTINF:")){
+   const comma=line.indexOf(",");pendingTitle=comma>=0?line.slice(comma+1).trim():"";continue;
+  }
+  if(line.startsWith("#"))continue;
+  const path=line.replace(/^"|"$/g,"");
+  const fallback=path.split(/[\\/]/).pop().replace(/\.[^.]+$/," ").trim()||"Unknown track";
+  entries.push({title:pendingTitle||fallback,path});pendingTitle="";
+ }
+ return entries;
+}
+function importM3UFile(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=()=>reject(reader.error||new Error("Could not read playlist file"));
+  reader.onload=()=>{
+   try{
+    const entries=parseM3U(reader.result);
+    if(!entries.length){reject(new Error("No playlist entries found"));return}
+    const baseName=file.name.replace(/\.(m3u8?|M3U8?)$/i,"").trim()||"Imported playlist";
+    if(playlists.some(p=>p.name.toLocaleLowerCase()===baseName.toLocaleLowerCase())){reject(new Error(`A playlist named "${baseName}" already exists`));return}
+    const byPath=new Map(),byName=new Map();
+    for(const t of tracks){
+     const key=normalizeM3UPath(t.path);if(key&&!byPath.has(key))byPath.set(key,t);
+     const name=normalizeM3UPath(String(t.path||"").split(/[\\/]/).pop());if(name){if(!byName.has(name))byName.set(name,t);else byName.set(name,null)}
+    }
+    let matched=0,missing=0;
+    const imported=entries.map(entry=>{
+     const key=normalizeM3UPath(entry.path),basename=normalizeM3UPath(entry.path.split(/[\\/]/).pop());
+     let found=byPath.get(key)||null;
+     if(!found&&basename)found=byName.get(basename)||null;
+     if(found){matched++;return {title:found.title||entry.title,path:found.path,artist:found.artist||"",album:found.album||"",unavailable:false}}
+     missing++;return {title:entry.title,path:entry.path,unavailable:true};
+    });
+    playlists.push({id:Date.now().toString()+Math.random().toString(36).slice(2,7),name:baseName,tracks:imported,imported:true});
+    save();renderPlaylists();updateStats();
+    diagLog("info","m3u_import_completed",{file:file.name,entries:entries.length,matched,missing});
+    resolve({name:baseName,total:entries.length,matched,missing});
+   }catch(error){reject(error)}
+  };
+  reader.readAsText(file,"UTF-8");
+ });
+}
+$("importPlaylist").addEventListener("click",()=>$("m3uInput").click());
+$("m3uInput").addEventListener("change",async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+  const result=await importM3UFile(file);
+  toast(`Imported ${result.total} tracks · ${result.matched} matched · ${result.missing} not found`);
+ }catch(error){
+  diagLog("warning","m3u_import_failed",{file:file.name,message:String(error?.message||error)});
+  toast(error?.message||"Could not import playlist");
+ }
+ e.target.value="";
+});
+
+function choosePlaylistForTracks(items,label){
+ if(!items.length){toast("No tracks to add");return}
+ if(!playlists.length){toast("Create a playlist first");page("playlists");return}
+ const options=playlists.map((p,i)=>`<option value="${i}">${esc(p.name)}</option>`).join("");
+ modal("Add "+label,`${items.length} tracks selected. Choose a destination playlist.`,`<select id="destination" style="width:100%;padding:12px;border-radius:12px;background:var(--bg);color:var(--text);border:1px solid var(--line)">${options}</select>`,`<button class="btn ghost" id="cancelModal">Cancel</button><button class="btn" id="confirmModal">Add tracks</button>`);
+ $("cancelModal").onclick=closeModal;
+ $("confirmModal").onclick=()=>{
+  const p=playlists[+$("destination").value],seen=new Set(p.tracks.map(t=>t.path));
+  items.forEach(t=>{if(!seen.has(t.path))p.tracks.push({title:t.title,path:t.path})});
+  const added=p.tracks.length;
+  save();closeModal();toast("Tracks added to "+p.name);updateStats();
+ };
+}
+$("addAlbum").addEventListener("click",()=>{
+ if(!groupFilter||groupFilter.key!=="album")return;
+ const albumTracks=tracks.filter(t=>t.album===groupFilter.value);
+ choosePlaylistForTracks(albumTracks,"album");
+});
+
+$("addSelected").addEventListener("click",()=>{
+ const items=getAddableSelectedTracks();
+ if(!items.length){toast("Select tracks first");return}
+ choosePlaylistForTracks(items,"selected tracks");
+});
+function renderPlaylists(){if(!playlists.length){$("playlistList").innerHTML='<div class="empty">No playlists yet. Create one to get started.</div>';return}$("playlistList").innerHTML=playlists.map(p=>`<div class="playlist"><div class="playlist-icon">♫</div><div class="playlist-info"><b>${esc(p.name)}</b><span>${p.tracks.length} tracks</span></div><div class="actions"><button class="btn secondary small" data-open="${p.id}">Open</button><button class="btn ghost small" data-export="${p.id}">Export M3U</button><button class="btn ghost small" data-more="${p.id}">•••</button></div></div>`).join("");$("playlistList").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openPlaylist(b.dataset.open));$("playlistList").querySelectorAll("[data-export]").forEach(b=>b.onclick=()=>exportPlaylist(b.dataset.export));$("playlistList").querySelectorAll("[data-more]").forEach(b=>b.onclick=()=>playlistMore(b.dataset.more))}
+function applyPlaylistSort(){
+ const mode=$("playlistSort").value;
+ const [field,direction]=mode.split("-");
+ const sign=direction==="desc"?-1:1;
+ playlists.sort((a,b)=>{
+  const result=field==="count"?a.tracks.length-b.tracks.length:compareText(a.name,b.name);
+  return result*sign||compareText(a.name,b.name);
+ });
+ save();renderPlaylists();
+}
+$("playlistSort").addEventListener("change",()=>{
+ applyPlaylistSort();
+ const labels={"name-asc":"Playlists sorted A–Z","name-desc":"Playlists sorted Z–A","count-asc":"Playlists sorted by fewest tracks","count-desc":"Playlists sorted by most tracks"};
+ toast(labels[$("playlistSort").value]||"Playlists sorted");
+});
+function openPlaylist(id){
+ let p=playlists.find(x=>x.id===id);if(!p)return;activePlaylist=id;
+ let body=p.tracks.length?p.tracks.map((t,i)=>`<div class="track">
+  <span class="track-info"><span class="track-title">${esc(t.title)}${t.unavailable?' <small style="color:var(--muted)">(not found in loaded library)</small>':""}</span><span class="track-path">${esc(t.path)}</span></span>
+  <div class="actions">
+   <button class="btn ghost small" data-up="${i}" ${i===0?"disabled":""} aria-label="Move up">↑</button>
+   <button class="btn ghost small" data-down="${i}" ${i===p.tracks.length-1?"disabled":""} aria-label="Move down">↓</button>
+   <button class="btn ghost small" data-remove="${i}">Remove</button>
+  </div>
+ </div>`).join(""):'<div class="empty">This playlist is empty.</div>';
+ modal(esc(p.name),`${p.tracks.length} tracks · M3U playlist`,`<div style="max-height:45dvh;overflow:auto">${body}</div>`,`<button class="btn secondary" id="sortPlaylist" ${p.tracks.length<2?"disabled":""}>Sort A–Z</button><button class="btn ghost" id="closePlaylist">Close</button><button class="btn" id="exportFromOpen">Export M3U</button>`);
+ $("closePlaylist").onclick=closeModal;
+ $("exportFromOpen").onclick=()=>exportPlaylist(id);
+ $("sortPlaylist").onclick=()=>{
+  p.tracks.sort((a,b)=>a.title.localeCompare(b.title,undefined,{sensitivity:"base"}));
+  save();openPlaylist(id);renderPlaylists();toast("Playlist sorted A–Z");
+ };
+ $("modalContent").querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>{
+  const i=+b.dataset.up;if(i<=0)return;
+  [p.tracks[i-1],p.tracks[i]]=[p.tracks[i],p.tracks[i-1]];
+  save();openPlaylist(id);renderPlaylists();
+ });
+ $("modalContent").querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>{
+  const i=+b.dataset.down;if(i>=p.tracks.length-1)return;
+  [p.tracks[i+1],p.tracks[i]]=[p.tracks[i],p.tracks[i+1]];
+  save();openPlaylist(id);renderPlaylists();
+ });
+ $("modalContent").querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{
+  p.tracks.splice(+b.dataset.remove,1);save();openPlaylist(id);renderPlaylists()
+ });
+}
+function playlistMore(id){let p=playlists.find(x=>x.id===id);if(!p)return;modal("Playlist options",esc(p.name),'<input id="renameInput" type="text" maxlength="60" placeholder="New playlist name">',`<button class="btn ghost" id="cancelModal">Cancel</button><button class="btn ghost" id="deletePlaylist">Delete</button><button class="btn" id="renamePlaylist">Rename</button>`);$("cancelModal").onclick=closeModal;$("renamePlaylist").onclick=()=>{let n=$("renameInput").value.trim();if(!n)return;if(playlists.some(x=>x.id!==id&&x.name.toLowerCase()===n.toLowerCase())){toast("Name already exists");return}p.name=n;save();closeModal();renderPlaylists();toast("Playlist renamed")};$("deletePlaylist").onclick=()=>{playlists=playlists.filter(x=>x.id!==id);save();closeModal();renderPlaylists();updateStats();toast("Playlist deleted")}}
+function exportPlaylist(id){let p=playlists.find(x=>x.id===id);if(!p)return;if(!p.tracks.length){toast("Add tracks before exporting");return}let content="#EXTM3U\n"+p.tracks.map(t=>`#EXTINF:-1,${t.title.replace(/[\r\n]/g," ")}\n${t.path.replace(/\\/g,"/")}`).join("\n")+"\n";let blob=new Blob([content],{type:"audio/x-mpegurl;charset=utf-8"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download=p.name.replace(/[\\/:*?"<>|]/g,"_")+".m3u";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast("M3U export started")}
+$("burgundyTheme").onclick=()=>applyTheme("burgundy");$("amoledTheme").onclick=()=>applyTheme("amoled");$("materialTheme").onclick=()=>applyTheme("material");$("materialColor").addEventListener("input",e=>{materialSeed=e.target.value;localStorage.setItem("em_material_seed",materialSeed);if(theme==="material")applyMaterialPalette()});$("customAmoled").addEventListener("change",e=>{customAmoled=e.target.checked;localStorage.setItem("em_custom_amoled",String(customAmoled));if(theme==="material")applyMaterialPalette()});
+$("diagExport").onclick=()=>{const blob=new Blob([diagnosticReport()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="Nocturne_Diagnostics.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);};
+$("diagCopy").onclick=async()=>{try{await navigator.clipboard.writeText(diagnosticReport());toast("Diagnostic report copied")}catch{toast("Clipboard unavailable; use Export .txt")}};
+$("diagClear").onclick=()=>{diagnosticLogs=[];try{localStorage.removeItem(DIAG_KEY)}catch{}updateDiagnostics();toast("Diagnostic logs cleared")};
+$("resetData").onclick=()=>{modal("Reset local data?","This deletes playlists saved in this browser. Your music files are not affected.","",`<button class="btn ghost" id="cancelModal">Cancel</button><button class="btn" id="confirmModal">Reset</button>`);$("cancelModal").onclick=closeModal;$("confirmModal").onclick=()=>{playlists=[];save();closeModal();renderPlaylists();updateStats();toast("Local data reset")}};
+applyTheme(theme);syncViews();updateStats();updateDiagnostics();renderTracks();restoreLibrarySnapshot();
+})();
+</script>
+</body></html>
