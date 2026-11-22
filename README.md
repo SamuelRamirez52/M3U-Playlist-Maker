@@ -59,11 +59,13 @@ Links
 
 <p align="center">
   <a href="https://samuelramirez52.github.io/M3U-Playlist-Maker/">
-    **OPEN WEB APP**
+    <img src="https://img.shields.io/badge/OPEN%20WEB%20APP-Nocturne-8B6B9E?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open Web App">
   </a>
-  ·
+  <a href="CHANGELOG.md">
+    <img src="https://img.shields.io/badge/CHANGELOG-Version%20History-6D597A?style=for-the-badge" alt="Changelog">
+  </a>
   <a href="https://t.me/SamuelRamirez52">
-    **TELEGRAM**
+    <img src="https://img.shields.io/badge/TELEGRAM-Contact-333333?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram">
   </a>
 </p>For questions, suggestions or feedback, feel free to reach out.
 
