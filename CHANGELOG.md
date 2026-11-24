@@ -1,5 +1,105 @@
 Nocturne M3U Manager — Changelog
 
+Version 1.6.4
+
+Interface Improvements
+
+- Reorganized library action buttons into a responsive grid.
+- Standardized button sizing, height, spacing and alignment.
+- Improved mobile layout with two-column button arrangement and wider-screen layout with three columns.
+- Improved text wrapping and toolbar organization to prevent uneven button rows.
+
+Preserved Features
+
+- Retained all 1.6.3 functionality, including group-specific bulk selection, metadata editing and library management.
+
+---
+
+Version 1.6.3
+
+Group Selection Improvements
+
+- Added Select all / Deselect all inside individual album, artist and genre views.
+- Selection applies only to tracks belonging to the currently opened group.
+- Search-aware selection preserves tracks selected outside the current group or search results.
+- Improved selection controls across library views.
+
+---
+
+Version 1.6.2
+
+Library Selection
+
+- Added Select all / Deselect all to Songs, Albums, Artists and Genres views.
+- Selection respects the active search.
+- Deselecting visible results preserves selections outside the current search.
+- Selection button labels update automatically based on the current selection state.
+
+---
+
+Version 1.6.1
+
+Metadata Editor Improvements
+
+- Added metadata field suggestions based on values already present in the scanned music library.
+- Added a curated list of common genre suggestions.
+- Suggestions are optional; custom values can still be entered freely.
+- Applied suggestions to both individual and batch metadata editing.
+
+Library Cleanup
+
+- Removed the standalone "Show tracks without genre" filter button.
+
+---
+
+Version 1.6.0
+
+Metadata Editor
+
+- Added individual metadata editing for library tracks.
+- Added support for editing title, artist, album, album artist, genre, year, track number, disc number, composer, comment, copyright, publisher/label, BPM and grouping.
+- Added metadata change preview and an option to clear empty fields.
+- Added embedded album artwork replacement and removal.
+- Added the ability to copy metadata and artwork from one track to selected tracks.
+
+Batch Editing
+
+- Added batch metadata editing for manually selected tracks.
+- Added ZIP export of edited copies while preserving relative folder structure.
+- Added automatic track numbering based on the current library order.
+
+File Safety
+
+- Edited tracks are exported as new copies.
+- Original source files are never overwritten.
+- Metadata editing does not intentionally re-encode audio.
+
+---
+
+Version 1.5.0
+
+Playlist Organization
+
+- Added advanced playlist sorting by artist, album, title, track number, release date, release year, duration and filename.
+- Added combined Artist → Album → Track Number sorting.
+- Added ascending and descending sorting, order inversion and restore original order.
+- Added drag-and-drop playlist reordering.
+- Playlist order is preserved during M3U export.
+
+Metadata and Track Information
+
+- Expanded library information with release date/year, duration, codec, sample rate and bit depth when available.
+- Added detailed track information, including metadata tags, embedded artwork, audio properties and file information.
+- Added local caching for expanded metadata.
+
+M3U Compatibility
+
+- Expanded playlist compatibility checks for suspicious paths, duplicate entries, whitespace issues and unmatched tracks.
+- Added possible filename match suggestions when a music folder is loaded.
+- Added actual track duration to #EXTINF export when available.
+
+---
+
 Version 1.4.4
 
 M3U Playlist Import
@@ -29,7 +129,7 @@ Compatibility
 
 Preserved Features
 
-All existing library browsing, search, sorting, playlist management, M3U export, artwork display, diagnostics, persistent metadata caching and theme customization features remain available.
+- All existing library browsing, search, sorting, playlist management, M3U export, artwork display, diagnostics, persistent metadata caching and theme customization features remain available.
 
 ---
 
@@ -83,7 +183,3 @@ Tested with a library containing 506 audio files.
 - 505 embedded artworks detected.
 - 0 errors and 0 warnings.
 - Library restoration, individual removal, bulk removal and playlist preservation successfully tested.
-
----
-
-Version 1.4.4 introduces M3U playlist importing and interface refinements, building on the performance, caching and library management improvements introduced in version 1.4.3.
